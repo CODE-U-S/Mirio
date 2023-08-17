@@ -1,6 +1,6 @@
 import javax.swing.*;
 
-public class main {
+public class Main {
     public static void main(String[] args) {
         // Swing GUI 생성을 위한 메인 스레드에서 실행
         SwingUtilities.invokeLater(() -> createAndShowGUI());
