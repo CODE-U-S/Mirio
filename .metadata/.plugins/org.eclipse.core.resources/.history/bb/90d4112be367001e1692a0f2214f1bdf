@@ -1,0 +1,18 @@
+package Stage;
+
+import java.awt.*;
+import java.awt.event.*;
+import java.util.List;
+import javax.swing.*;
+
+public class Main implements Runnable {
+    
+	public void run() {
+		final JFrame frame = new JFrame("Super Mario");
+        frame.setLocation(1200, 700);
+	}
+	
+	public static void main(String[] args) {
+		SwingUtilities.invokeLater(new Main());
+	}
+}
