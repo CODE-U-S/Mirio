@@ -1,0 +1,50 @@
+package Stage;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import javax.imageio.ImageIO;
+
+
+public class StartPanel extends JPanel {
+    private final JFrame parentFrame;
+
+    public StartPanel(JFrame parentFrame) {
+        this.parentFrame = parentFrame;
+
+        setLayout(new BorderLayout());
+
+        // 배경 이미지를 넣을 수 있는 JLabel을 사용
+        ImageIcon backgroundImageIcon = new ImageIcon("images/001.png");
+        JLabel backgroundLabel = new JLabel(backgroundImageIcon);
+        add(backgroundLabel, BorderLayout.CENTER);
+
+        // 투명 버튼 추가
+        JButton startButton = new JButton("게임 시작");
+        startButton.setForeground(Color.WHITE);
+        startButton.setFont(new Font("Arial", Font.BOLD, 24));
+        startButton.setOpaque(false); // 버튼의 배경을 투명하게 설정
+        startButton.setContentAreaFilled(false); // 버튼의 내용 영역을 투명하게 설정
+        startButton.setBorderPainted(false); // 버튼의 테두리를 숨김
+
+        startButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // 게임 시작 버튼 클릭 시 캐릭터 패널로 전환
+                CharacterPanel characterPanel = new CharacterPanel(parentFrame);
+                parentFrame.getContentPane().removeAll();
+                parentFrame.add(characterPanel);
+                parentFrame.validate();
+            }
+        });
+
+        // 버튼을 중앙에 배치
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        buttonPanel.setOpaque(false);
+        buttonPanel.add(startButton);
+        add(buttonPanel, BorderLayout.SOUTH);
+    }
+}
+

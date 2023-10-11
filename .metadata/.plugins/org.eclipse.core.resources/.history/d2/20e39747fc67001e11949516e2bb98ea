@@ -1,0 +1,31 @@
+import java.awt.*;
+import java.awt.event.*;
+import java.util.List;
+import javax.swing.*;
+
+public class Main implements Runnable {
+    
+	public void run() {
+		final JFrame frame = new JFrame("Mirio");
+        frame.setSize(1200, 700); // 프레임 크기를 1200x700으로 설정
+      
+        
+        
+        
+        // CharacterPanel을 그 다음에 추가
+        CharacterPanel myPanel02 = new CharacterPanel();
+        frame.add(myPanel02);
+        
+     // StartPanel을 먼저 추가
+        StartPanel myPanel01 = new StartPanel();
+        frame.add(myPanel01);
+        
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
+        
+	}
+	
+	public static void main(String[] args) {
+		SwingUtilities.invokeLater(new Main());
+	}
+}

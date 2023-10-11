@@ -1,0 +1,18 @@
+package Stage;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import javax.imageio.ImageIO;
+
+public class StartPanel extends Runnable {
+    
+	public void run() {
+		
+	}
+	public static void main(String[] args) {
+		SwingUtilities.invokeLater(new StartPanel());
+	}
+}

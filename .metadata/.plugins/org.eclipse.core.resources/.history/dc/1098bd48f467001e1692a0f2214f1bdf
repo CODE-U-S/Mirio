@@ -1,0 +1,38 @@
+import java.awt.Cursor;
+
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+public class BaseFrame extends JFrame {
+	JLabel[] lb = new JLabel[2000];
+	JButton[] btn = new JButton[2000];
+	JTextField[] tf = new JTextField[2000];
+	
+	JPanel main;
+	String jcomp, val;
+	String[] jcompArr = ",JLabel,JButton,JTextField".split(",");
+	String[] valArr = ",lb[],btn[],tf[]".split(",");
+	
+	JComponent comp;
+	
+	public BaseFrame(String title, int w, int h) {
+		setTitle(title);
+		setSize(w, h);
+		setDefaultCloseOperation(2);
+		setLocationRelativeTo(null);
+		
+		setCursor(new Cursor(CROSSHAIR_CURSOR));
+
+	
+	}
+	
+	public <T extends JComponent> T setBounds(T comp, int x, int y, int w, int h) {
+		comp.setBounds(x, y, w, h);
+		return compl
+	}
+}
