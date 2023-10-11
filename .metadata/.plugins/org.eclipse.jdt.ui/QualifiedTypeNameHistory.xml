@@ -11,6 +11,8 @@
     <fullyQualifiedTypeName name="BaseFrame"/>
     <fullyQualifiedTypeName name="Test"/>
     <fullyQualifiedTypeName name="javax.swing.JPanel"/>
-    <fullyQualifiedTypeName name="StartPanel"/>
     <fullyQualifiedTypeName name="CharacterPanel"/>
+    <fullyQualifiedTypeName name="StartPanel"/>
+    <fullyQualifiedTypeName name="java.awt.event.ActionEvent"/>
+    <fullyQualifiedTypeName name="java.awt.event.ActionListener"/>
 </qualifiedTypeNameHistroy>
