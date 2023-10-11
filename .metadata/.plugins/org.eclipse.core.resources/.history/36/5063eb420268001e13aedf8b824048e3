@@ -1,0 +1,33 @@
+import java.awt.*;
+import java.awt.event.*;
+import java.util.List;
+import javax.swing.*;
+
+public class Main implements Runnable {
+    public void run() {
+        final JFrame frame = new JFrame("Mirio");
+        frame.setSize(1200, 700);
+
+        // Create the CardLayout and the JPanel for card switching
+        CardLayout cardLayout = new CardLayout();
+        JPanel cardPanel = new JPanel(cardLayout);
+
+        // Create CharacterPanel and StartPanel with cardLayout and cardPanel
+        CharacterPanel characterPanel = new CharacterPanel();
+        StartPanel startPanel = new StartPanel(cardLayout, cardPanel);
+
+        // Add CharacterPanel and StartPanel to the cardPanel
+        cardPanel.add(characterPanel, "CharacterPanel");
+        cardPanel.add(startPanel, "StartPanel");
+
+        // Add cardPanel to the frame
+        frame.add(cardPanel);
+
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Main());
+    }
+}
