@@ -1,0 +1,16 @@
+package Stage;
+
+import java.awt.*;
+import java.awt.event.*;
+import java.util.List;
+import javax.swing.*;
+
+public class Main extends Runnable {
+    
+	public void run() {
+		
+	}
+	public static void main(String[] args) {
+		SwingUtilities.invokeLater(new Main());
+	}
+}

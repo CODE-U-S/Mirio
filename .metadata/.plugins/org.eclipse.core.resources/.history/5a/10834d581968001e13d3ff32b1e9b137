@@ -1,0 +1,33 @@
+import java.awt.*;
+import java.awt.event.*;
+import java.util.List;
+import javax.swing.*;
+
+public class Main implements Runnable {
+    
+	public void run() {
+	    final JFrame frame = new JFrame("Mirio");
+	    frame.setSize(1200, 700);
+
+	    // CardLayout 및 JPanel 생성
+	    CardLayout cardLayout = new CardLayout();
+	    JPanel cardPanel = new JPanel(cardLayout);
+	    frame.add(cardPanel);
+
+	    // CharacterPanel을 생성하고 cardPanel에 추가
+	    CharacterPanel characterPanel = new CharacterPanel();
+	    cardPanel.add(characterPanel, "characterPanel");
+
+	    // StartPanel을 생성하고 cardPanel에 추가
+	    StartPanel startPanel = new StartPanel(cardLayout, cardPanel);
+	    cardPanel.add(startPanel, "startPanel");
+
+	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	    frame.setVisible(true);
+	}
+
+	
+	public static void main(String[] args) {
+		SwingUtilities.invokeLater(new Main());
+	}
+}

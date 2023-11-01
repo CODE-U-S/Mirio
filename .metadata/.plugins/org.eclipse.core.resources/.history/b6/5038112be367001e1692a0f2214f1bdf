@@ -1,0 +1,28 @@
+package Stage;
+
+import javax.swing.*;
+import java.awt.*;
+
+class CharacterPanel extends JPanel {
+    private final JFrame parentFrame;
+
+    public CharacterPanel(JFrame parentFrame) {
+        this.parentFrame = parentFrame;
+
+        setLayout(new BorderLayout());
+
+        // 배경 이미지를 넣을 수 있는 JLabel을 사용
+        JLabel backgroundLabel = new JLabel(new ImageIcon("character_background.jpg"));
+        add(backgroundLabel);
+
+        // 버튼 추가
+        JButton button1 = new JButton("캐릭터 선택 1");
+        JButton button2 = new JButton("캐릭터 선택 2");
+
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setOpaque(false);
+        buttonPanel.add(button1);
+        buttonPanel.add(button2);
+        add(buttonPanel, BorderLayout.CENTER);
+    }
+}
