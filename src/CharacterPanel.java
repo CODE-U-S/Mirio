@@ -11,10 +11,12 @@ public class CharacterPanel extends JPanel {
     private BufferedImage image; // 이미지를 저장할 변수
     private CardLayout cardLayout; //화면 전환
     private JPanel cardPanel; // 화면 전환
+    private RunPanel runPanel;
     
-    public CharacterPanel(CardLayout cardLayout, JPanel cardPanel) {
+    public CharacterPanel(CardLayout cardLayout, JPanel cardPanel, RunPanel runPanel) {
         this.cardLayout = cardLayout;
         this.cardPanel = cardPanel;
+        this.runPanel = runPanel; // RunPanel 객체를 저장
         try {
             // 이미지 파일을 로드합니다. 이미지 파일은 images 폴더에 있어야 합니다.
             image = ImageIO.read(new File("images/character_main.png"));
@@ -29,7 +31,12 @@ public class CharacterPanel extends JPanel {
         character01.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // 화면 전환: StartPanel에서 CharacterPanel로 전환
+                String characterselect = "images/jinseon.png";
+                try {
+                    runPanel.setCharacterImage(characterselect);
+                } catch (IOException ex) {
+                    ex.printStackTrace(); // 또는 다른 예외 처리 로직 구현
+                }
                 cardLayout.show(cardPanel, "ExplanationPanel");
             }
         });
@@ -46,11 +53,16 @@ public class CharacterPanel extends JPanel {
         character02.setContentAreaFilled(false); // 버튼의 내용 영역을 투명하게 만듭니다
         character02.setOpaque(false); // 버튼을 투명하게 만듭니다.
         character02.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // 화면 전환: StartPanel에서 CharacterPanel로 전환
-                cardLayout.show(cardPanel, "ExplanationPanel");
-            }
+        	  @Override
+              public void actionPerformed(ActionEvent e) {
+                  String characterselect = "images/character01.gif";
+                  try {
+                      runPanel.setCharacterImage(characterselect);
+                  } catch (IOException ex) {
+                      ex.printStackTrace(); // 또는 다른 예외 처리 로직 구현
+                  }
+                  cardLayout.show(cardPanel, "ExplanationPanel");
+              }
         });
 
         // 패널에 버튼을 추가
