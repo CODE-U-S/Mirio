@@ -45,7 +45,6 @@ public class CharacterPanel extends JPanel {
         setLayout(null); // 레이아웃 관리자를 사용하지 않고 직접 위치 설정
         character01.setBounds(85, 100, 425, 425); // 버튼의 위치와 크기를 설정
         add(character01);
-
         
         
         // 투명한 버튼 생성
@@ -55,7 +54,7 @@ public class CharacterPanel extends JPanel {
         character02.addActionListener(new ActionListener() {
         	  @Override
               public void actionPerformed(ActionEvent e) {
-                  String characterselect = "images/character01.gif";
+                  String characterselect = "images/sunhee.png";
                   try {
                       runPanel.setCharacterImage(characterselect);
                   } catch (IOException ex) {

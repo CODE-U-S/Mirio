@@ -34,8 +34,8 @@ public class RunPanel extends JPanel {
             e.printStackTrace();
         }
 
-        characterX = 100;
-        characterY = 100;
+        characterX = 50;
+        characterY = 600;
 
         setKeyBindings();
 
