@@ -16,13 +16,20 @@ public class RunPanel extends JPanel {
     private int characterX, characterY;
     private CardLayout cardLayout; //화면 전환
     private JPanel cardPanel; // 화면 전환
+    private String characterSelection;
+    // characterSelection 값을 설정하는 메서드
+    public void setCharacterImage(String characterSelection) throws IOException {
+        this.characterImage = ImageIO.read(new File(characterSelection));
+    }
+
+    
 
     public RunPanel(CardLayout cardLayout, JPanel cardPanel) {
     	this.cardLayout = cardLayout;
         this.cardPanel = cardPanel;
     	try {
             backgroundImage = ImageIO.read(new File("images/run.png"));
-            characterImage = ImageIO.read(new File("images/jinseon.png"));
+            //characterImage = ImageIO.read(new File(characterselect));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -115,5 +122,7 @@ public class RunPanel extends JPanel {
             g.drawImage(characterImage, characterX, characterY, this);
         }
     }
+    
+   
 }
 
