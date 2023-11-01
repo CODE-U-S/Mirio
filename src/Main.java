@@ -1,40 +1,52 @@
+import java.awt.*;
 import javax.swing.*;
 
-import Stage.GoToSchoolPanel;
-import Stage.StartPanel;
-import Stage.SunheeCharacterPanel;
+public class Main implements Runnable {
 
-import java.awt.*;
+    public void run() {
+        final JFrame frame = new JFrame("Mirio");
+        frame.setSize(1200, 730); // 프레임 크기를 1200x700으로 설정
 
-public class Main {
-    private static CardLayout cardLayout;
-    private static JPanel cardPanel;
+        frame.setIconImage(Toolkit.getDefaultToolkit().getImage("images/jinseon.png"));
+        
+       
+        // CardLayout과 cardPanel을 생성
+        CardLayout cardLayout = new CardLayout();
+        JPanel cardPanel = new JPanel(cardLayout);
+
+        // 각 패널을 생성
+        StartPanel startPanel = new StartPanel(cardLayout, cardPanel);
+        CharacterPanel characterPanel = new CharacterPanel(cardLayout, cardPanel);
+        ExplanationPanel explanationPanel = new ExplanationPanel(cardLayout, cardPanel);
+        RunPanel runPanel = new RunPanel(cardLayout, cardPanel); // 이 부분은 수정하지 않음
+        StudyPanel studypanel = new StudyPanel();
+
+        // 패널을 cardPanel에 추가
+        cardPanel.add(startPanel, "StartPanel");
+        cardPanel.add(characterPanel, "CharacterPanel");
+        cardPanel.add(explanationPanel, "ExplanationPanel");
+        cardPanel.add(runPanel, "RunPanel");
+        cardPanel.add(studypanel, "StudyPanel");
+
+        // 프레임에 cardPanel 추가
+        frame.add(cardPanel);
+
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
+
+        // 화면 중앙에 위치
+        frame.setLocationRelativeTo(null);
+        
+        // 음악 재생
+        MusicPlayer musicPlayer = new MusicPlayer();
+        musicPlayer.playMusic("audio/music01.wav");
+
+    }
+    
+    
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> createAndShowGUI());
+        SwingUtilities.invokeLater(new Main());
     }
 
-    private static void createAndShowGUI() {
-        JFrame frame = new JFrame("GUI Example");
-        frame.setSize(1200, 700);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        cardLayout = new CardLayout();
-        cardPanel = new JPanel(cardLayout);
-
-        JPanel startPanel = new StartPanel(cardLayout, cardPanel);
-
-        GoToSchoolPanel goToSchoolPanel = new GoToSchoolPanel();
-        SunheeCharacterPanel sunheeCharacterPanel = new SunheeCharacterPanel();
-        
-        // GoToSchoolPanel 위에 SunheeCharacterPanel 추가
-        goToSchoolPanel.setLayout(new BorderLayout());
-        goToSchoolPanel.add(sunheeCharacterPanel, BorderLayout.SOUTH);
-
-        cardPanel.add(startPanel, "start");
-        cardPanel.add(goToSchoolPanel, "goToSchool");
-
-        frame.add(cardPanel);
-        frame.setVisible(true);
-    }
 }
