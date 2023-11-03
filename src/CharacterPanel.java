@@ -32,11 +32,11 @@ public class CharacterPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String characterselect = "images/jinseon.png";
-                try {
-                    runPanel.setCharacterImage(characterselect);
-                } catch (IOException ex) {
-                    ex.printStackTrace(); // 또는 다른 예외 처리 로직 구현
-                }
+//                try {
+//                    runPanel.setCharacterImage(characterselect);
+//                } catch (IOException ex) {
+//                    ex.printStackTrace(); // 또는 다른 예외 처리 로직 구현
+//                }
                 cardLayout.show(cardPanel, "ExplanationPanel");
             }
         });
@@ -55,11 +55,11 @@ public class CharacterPanel extends JPanel {
         	  @Override
               public void actionPerformed(ActionEvent e) {
                   String characterselect = "images/sunhee.png";
-                  try {
-                      runPanel.setCharacterImage(characterselect);
-                  } catch (IOException ex) {
-                      ex.printStackTrace(); // 또는 다른 예외 처리 로직 구현
-                  }
+//                  try {
+//                      runPanel.setCharacterImage(characterselect);
+//                  } catch (IOException ex) {
+//                      ex.printStackTrace(); // 또는 다른 예외 처리 로직 구현
+//                  }
                   cardLayout.show(cardPanel, "ExplanationPanel");
               }
         });

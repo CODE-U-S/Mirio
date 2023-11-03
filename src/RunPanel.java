@@ -1,128 +1,147 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
-import javax.imageio.ImageIO;
-import java.io.File;
-import java.io.IOException;
-import java.awt.event.ActionListener;
-
 
 public class RunPanel extends JPanel {
-    private BufferedImage backgroundImage;
-    private BufferedImage characterImage;
-    private int characterX, characterY;
-    private CardLayout cardLayout; //화면 전환
-    private JPanel cardPanel; // 화면 전환
-    private String characterSelection;
-    // characterSelection 값을 설정하는 메서드
-    public void setCharacterImage(String characterSelection) throws IOException {
-        this.characterImage = ImageIO.read(new File(characterSelection));
-    }
+    private int x = 70; // 플레이어의 x 좌표
+    private int y = 535; // 플레이어의 y 좌표
 
-    
+    private boolean isRight; // 오른쪽 방향 키가 눌렸는지 확인
+    private boolean isLeft; // 왼쪽 방향 키가 눌렸는지 확인
+    private boolean isJump; // 점프 중인지 확인
+
+    private static final int JUMPSPEED = 2; // 점프 속도
+    private static final int SPEED = 4; // 이동 속도
 
     public RunPanel(CardLayout cardLayout, JPanel cardPanel) {
-    	this.cardLayout = cardLayout;
-        this.cardPanel = cardPanel;
-    	try {
-            backgroundImage = ImageIO.read(new File("images/run.png"));
-            //characterImage = ImageIO.read(new File(characterselect));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        setFocusable(true); // 패널이 포커스를 받을 수 있도록 함
+        setPreferredSize(new Dimension(1000, 640)); // 패널의 크기 설정
 
-        characterX = 50;
-        characterY = 600;
+        InputMap inputMap = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap actionMap = getActionMap();
 
-        setKeyBindings();
-
-        Timer timer = new Timer(16, new ActionListener() {
-            @Override
+        // 오른쪽 키
+        KeyStroke rightKeyReleased = KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0, false);
+        inputMap.put(rightKeyReleased, "RightReleased");
+        actionMap.put("RightReleased", new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
-                repaint();
+                isRight = true;
+                moveRight();
             }
         });
-        timer.start();
+
+        KeyStroke rightKeyPressed = KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0, true);
+        inputMap.put(rightKeyPressed, "RightPressed");
+        actionMap.put("RightPressed", new AbstractAction() {
+            public void actionPerformed(ActionEvent e) {
+                isRight = false;
+            }
+        });
+
+        // 왼쪽 키
+        KeyStroke leftKeyReleased = KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0, false);
+        inputMap.put(leftKeyReleased, "LeftReleased");
+        actionMap.put("LeftReleased", new AbstractAction() {
+            public void actionPerformed(ActionEvent e) {
+                isLeft = true;
+                moveLeft();
+            }
+        });
+
+        KeyStroke leftKeyPressed = KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0, true);
+        inputMap.put(leftKeyPressed, "LeftPressed");
+        actionMap.put("LeftPressed", new AbstractAction() {
+            public void actionPerformed(ActionEvent e) {
+                isLeft = false;
+            }
+        });
+
+        // 위쪽 키
+        KeyStroke upKey = KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0, false);
+        inputMap.put(upKey, "Up");
+        actionMap.put("Up", new AbstractAction() {
+            public void actionPerformed(ActionEvent e) {
+                if (!isJump) {
+                    isJump = true;
+                    jump();
+                }
+            }
+        });
     }
 
-    private void setKeyBindings() {
-        InputMap inputMap = this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-        ActionMap actionMap = this.getActionMap();
-
-        KeyStroke leftKey = KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0);
-        inputMap.put(leftKey, "moveLeft");
-        actionMap.put("moveLeft", new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                characterX -= 10;
-                repaint();
+    private void moveRight() {
+        new Thread(() -> {
+            while (isRight) {
+                x += SPEED;
+                setPlayerLocation();
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
-        });
-
-        KeyStroke rightKey = KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0);
-        inputMap.put(rightKey, "moveRight");
-        actionMap.put("moveRight", new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                characterX += 10;
-                repaint();
-            }
-        });
-
-        KeyStroke upKey = KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0);
-        inputMap.put(upKey, "moveUp");
-        actionMap.put("moveUp", new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                characterY -= 10;
-                repaint();
-            }
-        });
-
-        KeyStroke downKey = KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0);
-        inputMap.put(downKey, "moveDown");
-        actionMap.put("moveDown", new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                characterY += 10;
-                repaint();
-            }
-        });
-        
-        // 투명한 버튼 생성
-        JButton runbtn = new JButton();
-        runbtn.setContentAreaFilled(false); // 버튼의 내용 영역을 투명하게 만듭니다
-        runbtn.setOpaque(false); // 버튼을 투명하게 만듭니다.
-        runbtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-            	// 화면 전환: StartPanel에서 CharacterPanel로 전환
-            	cardLayout.show(cardPanel, "StudyPanel");
-            }
-        });
-
-        // 패널에 버튼을 추가
-        setLayout(null); // 레이아웃 관리자를 사용하지 않고 직접 위치 설정
-        runbtn.setBounds(700, 100, 425, 425); // 버튼의 위치와 크기를 설정
-        add(runbtn);
+        }).start();
     }
-    
+
+    private void moveLeft() {
+        new Thread(() -> {
+            while (isLeft) {
+                x -= SPEED;
+                setPlayerLocation();
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+    private void jump() {
+        isJump = true;
+        new Thread(() -> {
+            for (int i = 0; i < 130 / JUMPSPEED; i++) {
+                y -= JUMPSPEED;
+                setPlayerLocation();
+                try {
+                    Thread.sleep(2);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            try {
+                Thread.sleep(60);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            for (int i = 0; i < 130 / JUMPSPEED; i++) {
+                y += JUMPSPEED;
+                setPlayerLocation();
+                try {
+                    Thread.sleep(3);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            isJump = false;
+        }).start();
+    }
+
+    private void setPlayerLocation() {
+        SwingUtilities.invokeLater(() -> {
+            repaint();
+        });
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-
-        if (backgroundImage != null) {
-            g.drawImage(backgroundImage, 0, 0, this);
-        }
-
-        if (characterImage != null) {
-            g.drawImage(characterImage, characterX, characterY, this);
-        }
+        g.setColor(Color.BLUE);
+        g.fillRect(x, y, 30, 30);
     }
-    
-   
-}
 
+
+}
