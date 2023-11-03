@@ -31,12 +31,8 @@ public class CharacterPanel extends JPanel {
         character01.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String characterselect = "images/jinseon.png";
-//                try {
-//                    runPanel.setCharacterImage(characterselect);
-//                } catch (IOException ex) {
-//                    ex.printStackTrace(); // 또는 다른 예외 처리 로직 구현
-//                }
+                String characterselect = "images/jinseon";
+                runPanel.setCharacterImage(characterselect);
                 cardLayout.show(cardPanel, "ExplanationPanel");
             }
         });
@@ -54,12 +50,8 @@ public class CharacterPanel extends JPanel {
         character02.addActionListener(new ActionListener() {
         	  @Override
               public void actionPerformed(ActionEvent e) {
-                  String characterselect = "images/sunhee.png";
-//                  try {
-//                      runPanel.setCharacterImage(characterselect);
-//                  } catch (IOException ex) {
-//                      ex.printStackTrace(); // 또는 다른 예외 처리 로직 구현
-//                  }
+                  String characterselect = "images/sunhee";
+                  runPanel.setCharacterImage(characterselect);
                   cardLayout.show(cardPanel, "ExplanationPanel");
               }
         });

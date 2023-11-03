@@ -1,9 +1,13 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
 public class RunPanel extends JPanel {
+	private CardLayout cardLayout; //화면 전환
+    private JPanel cardPanel; // 화면 전환
+    
     private int x = 70; // 플레이어의 x 좌표
     private int y = 600; // 플레이어의 y 좌표
     private Image backgroundImage; // 배경 이미지를 저장할 Image 변수
@@ -16,23 +20,41 @@ public class RunPanel extends JPanel {
     private boolean isJump; // 점프 중인지 확인
 
     private static final int JUMPSPEED = 2; // 점프 속도
-    private static final int SPEED = 4; // 이동 속도
+    private static final int SPEED = 3; // 이동 속도
     
+    public void setCharacterImage(String characterSelection) {
+        this.playerD = characterSelection+ ".png";
+        playerU = characterSelection+ "_up.png";;
+        player = new ImageIcon(playerD).getImage();
+        
+    }
    
 
     public RunPanel(CardLayout cardLayout, JPanel cardPanel) {
+    	this.cardLayout = cardLayout;
+        this.cardPanel = cardPanel;
         setFocusable(true); // 패널이 포커스를 받을 수 있도록 함
        // setPreferredSize(new Dimension(1000, 640)); // 패널의 크기 설정
         
         // 배경 이미지 로드
         backgroundImage = new ImageIcon("images/run.png").getImage();
         
-        playerU = "images/jinseon_up.png";
-        playerD = "images/jinseon.png";
         
-        // 배경 이미지 로드
-        player = new ImageIcon(playerD).getImage();
-
+        // 투명한 버튼 생성
+        JButton runbtn = new JButton();
+        runbtn.setContentAreaFilled(false); // 버튼의 내용 영역을 투명하게 만듭니다
+        runbtn.setOpaque(false); // 버튼을 투명하게 만듭니다.
+        runbtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	// 화면 전환: StartPanel에서 CharacterPanel로 전환
+            	cardLayout.show(cardPanel, "StudyPanel");
+            }
+        });
+        setLayout(null); // 레이아웃 관리자를 사용하지 않고 직접 위치 설정
+        runbtn.setBounds(700, 100, 425, 425); // 버튼의 위치와 크기를 설정
+        add(runbtn); // 패널에 버튼을 추가
+        
 
         InputMap inputMap = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
         ActionMap actionMap = getActionMap();
@@ -89,7 +111,7 @@ public class RunPanel extends JPanel {
     private void moveRight() {
         new Thread(() -> {
             while (isRight) {
-                x += SPEED;
+                x += SPEED; // 이동 속도를 적용하여 x 값을 변경
                 setPlayerLocation();
                 try {
                     Thread.sleep(10);
