@@ -40,7 +40,7 @@ public class Main implements Runnable {
         
         // 음악 재생
         MusicPlayer musicPlayer = new MusicPlayer();
-        musicPlayer.playMusic("audio/music01.wav");
+        //musicPlayer.playMusic("audio/music01.wav");
 
     }
     
