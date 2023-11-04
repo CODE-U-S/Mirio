@@ -1,7 +1,12 @@
 import javax.swing.*;
+
+import java.applet.Applet;
+import java.applet.AudioClip;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -12,6 +17,14 @@ public class CharacterPanel extends JPanel {
     private CardLayout cardLayout; //화면 전환
     private JPanel cardPanel; // 화면 전환
     private RunPanel runPanel;
+    
+    private ImageIcon jinseon;
+    private ImageIcon jinseonC;
+    private ImageIcon sunhee;
+    private ImageIcon sunheeC;
+    
+    MusicPlayer musicPlayer = new MusicPlayer(); //효과음 음악플레이어
+
     
     public CharacterPanel(CardLayout cardLayout, JPanel cardPanel, RunPanel runPanel) {
         this.cardLayout = cardLayout;
@@ -24,10 +37,31 @@ public class CharacterPanel extends JPanel {
             e.printStackTrace();
         }
         
-        // 투명한 버튼 생성
-        JButton character01 = new JButton();
-        character01.setContentAreaFilled(false); // 버튼의 내용 영역을 투명하게 만듭니다
-        character01.setOpaque(false); // 버튼을 투명하게 만듭니다.
+        // jinseon 버튼
+        jinseon = new ImageIcon("images/start_jinseon.png");
+        jinseonC = new ImageIcon("images/start_jinseonC.png");
+
+        JButton character01 = new JButton(jinseon);
+        character01.setBorderPainted(false);
+        character01.setFocusPainted(false);
+        character01.setContentAreaFilled(false);
+
+        character01.setBounds(85, 100, jinseon.getIconWidth(), jinseon.getIconHeight());
+        add(character01);
+
+        character01.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                character01.setIcon(jinseonC);
+                                musicPlayer.playMusic("audio/choice.wav");
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                character01.setIcon(jinseon);
+            }
+        });
+
         character01.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -36,32 +70,48 @@ public class CharacterPanel extends JPanel {
                 cardLayout.show(cardPanel, "ExplanationPanel");
             }
         });
-
-        // 패널에 버튼을 추가
-        setLayout(null); // 레이아웃 관리자를 사용하지 않고 직접 위치 설정
-        character01.setBounds(85, 100, 425, 425); // 버튼의 위치와 크기를 설정
-        add(character01);
         
+        // sunhee 버튼
+        sunhee = new ImageIcon("images/start_sunhee.png");
+        sunheeC = new ImageIcon("images/start_sunheeC.png");
         
         // 투명한 버튼 생성
-        JButton character02 = new JButton();
-        character02.setContentAreaFilled(false); // 버튼의 내용 영역을 투명하게 만듭니다
-        character02.setOpaque(false); // 버튼을 투명하게 만듭니다.
-        character02.addActionListener(new ActionListener() {
-        	  @Override
-              public void actionPerformed(ActionEvent e) {
-                  String characterselect = "images/sunhee";
-                  runPanel.setCharacterImage(characterselect);
-                  cardLayout.show(cardPanel, "ExplanationPanel");
-              }
-        });
-
+        JButton character02 = new JButton(sunhee);
+        character02.setBorderPainted(false);
+        character02.setFocusPainted(false);
+        character02.setContentAreaFilled(false);
+        
         // 패널에 버튼을 추가
-        setLayout(null); // 레이아웃 관리자를 사용하지 않고 직접 위치 설정
-        character02.setBounds(700, 100, 425, 425); // 버튼의 위치와 크기를 설정
+        character02.setBounds(700, 100, sunhee.getIconWidth(), sunhee.getIconHeight());
         add(character02);
         
+        character02.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                character02.setIcon(sunheeC);
+                                musicPlayer.playMusic("audio/choice.wav");
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                character02.setIcon(sunhee);
+            }
+        });
+
+        character02.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String characterselect = "images/sunhee";
+                runPanel.setCharacterImage(characterselect);
+                cardLayout.show(cardPanel, "ExplanationPanel");
+            }
+        });
+
+       
+        
     }
+    
+
 
     @Override
     protected void paintComponent(Graphics g) {
