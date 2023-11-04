@@ -4,6 +4,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
+import javax.swing.border.Border;
+
 public class RunPanel extends JPanel {
 	private CardLayout cardLayout; //화면 전환
     private JPanel cardPanel; // 화면 전환
@@ -21,6 +23,8 @@ public class RunPanel extends JPanel {
 
     private static final int JUMPSPEED = 2; // 점프 속도
     private static final int SPEED = 3; // 이동 속도
+    
+    
     
     public void setCharacterImage(String characterSelection) {
         this.playerD = characterSelection+ ".png";
@@ -54,6 +58,31 @@ public class RunPanel extends JPanel {
         setLayout(null); // 레이아웃 관리자를 사용하지 않고 직접 위치 설정
         runbtn.setBounds(700, 100, 425, 425); // 버튼의 위치와 크기를 설정
         add(runbtn); // 패널에 버튼을 추가
+        
+        // 진행바
+        JProgressBar progressBar = new JProgressBar(0, 60);
+        progressBar.setBounds(20, 20, 1145, 25);
+        progressBar.setValue(60);
+        progressBar.setForeground(Color.PINK); // Set progress bar color to pink
+        Color customYellow = new Color(254, 239, 197); // RGB values for #FEEFC5
+        progressBar.setBackground(customYellow); // Set progress bar background color to #FEEFC5
+        add(progressBar);
+
+        Timer timer = new Timer(1000, new ActionListener() {
+            int timeInSeconds = 60;
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                timeInSeconds--;
+                progressBar.setValue(timeInSeconds);
+
+                if (timeInSeconds <= 0) {
+                    ((Timer) e.getSource()).stop();
+                }
+            }
+        });
+        timer.start();
+
         
 
         InputMap inputMap = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
