@@ -1,0 +1,88 @@
+메인 브런치를 만들기 위해 폴더 생성
+cmd에 코드 붙여넣기(만든 폴더에서 cmd 실행)
+
+git init
+git remote -v
+git remote add origin 주소
+git remote -v
+git status
+
+
+DB mysql
+새로 생성 : 4번째 아이콘(원형)
+코드작성
+글씨 굵게 만든 후 tables 우클릭 크레이티드 table?
+1. int만 pk nn ai하기
+2.apply 후 코드 가져와서 stmt 복붙
+3.apply 
+
+CRUD
+C : CREATE -> 스키마 생성, 값을 CREATE x
+R : READ ->값을 읽어오기
+U : UPDATE -> 값 변경하기
+D : DELETE -> 값 삭제하기
+
+(add와 commit 후 branch 생성해야함.)
+
+
+PS C:\Project\Shared_Receipts> git status
+On branch master
+Changes to be committed:
+
+PS C:\Project\Shared_Receipts> git add .
+******************************************warning: LF ************************************************
+PS C:\Project\Shared_Receipts> git config --global user.crlf true
+PS C:\Project\Shared_Receipts> git add .
+PS C:\Project\Shared_Receipts> git status
+On branch master
+Changes to be committed:
+
+PS C:\Project\Shared_Receipts> git commit -m "마이페이지"
+[master cdab806] 마이페이지
+PS C:\Project\Shared_Receipts> git push origin main
+   0d900e1..71bc3d9  main -> main
+
+PS C:\Project\Shared_Receipts> git fetch upstrewam
+fatal: 'upstrewam' does not appear to be a git repository
+fatal: Could not read from remote repository.
+Please make sure you have the correct access rights
+and the repository exists.
+
+PS C:\Project\Shared_Receipts> git fetch upstream	//upstream 없음
+fatal: 'upstream' does not appear to be a git repository
+fatal: Could not read from remote repository.
+Please make sure you have the correct access rights
+and the repository exists.
+
+PS C:\Project\Shared_Receipts> git remote add upstream https://github.com/CODE-U-S/Shared_Receipts_Application.git
+
+PS C:\Project\Shared_Receipts> git fetch upstream
+fatal: unable to access 'https://github.com/CODE-U-S/Shared_Receipts_Application.git/': Could not resolve host: github.com
+
+PS C:\Project\Shared_Receipts> git fetch upstream
+From https://github.com/CODE-U-S/Shared_Receipts_Application
+ * [new branch]      main       -> upstream/main
+
+PS C:\Project\Shared_Receipts> git pull upstream main	//pull 받을 거 없음
+From https://github.com/CODE-U-S/Shared_Receipts_Application
+ * branch            main       -> FETCH_HEAD
+Already up to date.
+
+PS C:\Project\Shared_Receipts> git push origin main
+Everything up-to-date
+
+
+
+
+unity id & ps
+
+	dlwlstjs0413@gmail.com
+	Iloveyou1004!
+
+unity push * commit
+
+1.git desktop fetch origin
+2.git sync fork
+3.git desktop fetch origin
+4.desktop pull
+5.desktop commit
