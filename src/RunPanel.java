@@ -63,7 +63,9 @@ public class RunPanel extends JPanel {
         JProgressBar progressBar = new JProgressBar(0, 60);
         progressBar.setBounds(20, 20, 1145, 25);
         progressBar.setValue(60);
-        progressBar.setForeground(Color.PINK); 
+        progressBar.setForeground(Color.PINK); // Set progress bar color to pink
+        Color customYellow = new Color(254, 239, 197); // RGB values for #FEEFC5
+        progressBar.setBackground(customYellow); // Set progress bar background color to #FEEFC5
         add(progressBar);
 
         Timer timer = new Timer(1000, new ActionListener() {
