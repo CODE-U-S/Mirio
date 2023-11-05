@@ -6,6 +6,8 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.border.Border;
 
+import java.util.List;
+
 public class RunPanel extends JPanel {
 	private CardLayout cardLayout; //화면 전환
     private JPanel cardPanel; // 화면 전환
@@ -23,6 +25,10 @@ public class RunPanel extends JPanel {
 
     private static final int JUMPSPEED = 2; // 점프 속도
     private static final int SPEED = 3; // 이동 속도
+    JProgressBar progressBar = new JProgressBar(0, 100); //진행바
+    //private volatile boolean isRight = true; // isRight가 제어 변수라고 가정합니다
+    private volatile boolean workerRunning = false; // SwingWorker가 실행 중인지를 추적하는 변수
+    private SwingWorker<Void, Void> worker; // 메서드 바깥에 SwingWorker 선언
     
     
     
@@ -60,29 +66,30 @@ public class RunPanel extends JPanel {
         add(runbtn); // 패널에 버튼을 추가
         
         // 진행바
-        JProgressBar progressBar = new JProgressBar(0, 60);
+       
         progressBar.setBounds(20, 20, 1145, 25);
-        progressBar.setValue(60);
-        progressBar.setForeground(Color.PINK); // Set progress bar color to pink
-        Color customYellow = new Color(254, 239, 197); // RGB values for #FEEFC5
-        progressBar.setBackground(customYellow); // Set progress bar background color to #FEEFC5
+        progressBar.setValue(100);
+        progressBar.setForeground(Color.PINK);
+        Color customYellow = new Color(254, 239, 197);
+        progressBar.setBackground(customYellow);
         add(progressBar);
 
-        Timer timer = new Timer(1000, new ActionListener() {
-            int timeInSeconds = 60;
-
+        // 생성자 또는 초기화 블록 내부에서 SwingWorker를 초기화합니다
+        worker = new SwingWorker<>() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                timeInSeconds--;
-                progressBar.setValue(timeInSeconds);
-
-                if (timeInSeconds <= 0) {
-                    ((Timer) e.getSource()).stop();
+            protected Void doInBackground() throws Exception {
+                for (int i = 100; i >= 0; i--) {
+                    progressBar.setValue(i);
+                    try {
+                        Thread.sleep(50);
+                    } catch (InterruptedException ex) {
+                        ex.printStackTrace();
+                    }
                 }
+                workerRunning = false; // SwingWorker가 작업을 완료하면 플래그를 재설정합니다
+                return null;
             }
-        });
-        timer.start();
-
+        };
         
 
         InputMap inputMap = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
@@ -139,14 +146,20 @@ public class RunPanel extends JPanel {
 
     private void moveRight() {
         new Thread(() -> {
-            while (isRight) {
-                x += SPEED; // 이동 속도를 적용하여 x 값을 변경
-                setPlayerLocation();
-                try {
-                    Thread.sleep(10);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+            if (!workerRunning) {
+                workerRunning = true; // SwingWorker가 실행 중임을 나타내는 플래그를 설정합니다
+                worker.execute(); // SwingWorker 실행
+                
+                while (isRight) {
+                    x += SPEED; // 이동 속도를 적용하여 x 값을 변경합니다
+                    setPlayerLocation();
+                    try {
+                        Thread.sleep(10);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
+                workerRunning = false; // 움직임이 끝나면 SwingWorker 플래그를 재설정합니다
             }
         }).start();
     }
@@ -222,6 +235,5 @@ public class RunPanel extends JPanel {
         // 캐릭터 이미지 그리기
         g.drawImage(player, x, y, this);
     }
-
 
 }
