@@ -1,4 +1,5 @@
 import java.awt.BorderLayout;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -7,6 +8,7 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 //TODO
@@ -44,8 +46,13 @@ public class StudyPanel extends JPanel implements KeyListener, Runnable {
     private int character_y = 550;
     private static int character_x = 60;
     
+    private boolean cnt = true;
     private int x;
     private int y;
+    
+    private JLabel text_label;
+    private int initalTimer = 60;
+
     
     static {//랜덤 난수 생성
     	
@@ -77,6 +84,7 @@ public class StudyPanel extends JPanel implements KeyListener, Runnable {
     public StudyPanel() {
     	// 화면 전환
     	setLayout(new BorderLayout());
+    	TimerPanel timerPanel = new TimerPanel();
         try {
             // 이미지 파일을 로드합니다. 이미지 파일은 images 폴더에 있어야 함.
             image = ImageIO.read(new File("images/MirioClassLearnBackground.png"));
@@ -97,8 +105,6 @@ public class StudyPanel extends JPanel implements KeyListener, Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Thread itemThread = new Thread(this);
-        itemThread.start();
     }
 
     public void keyPressed(KeyEvent e) {
@@ -106,10 +112,16 @@ public class StudyPanel extends JPanel implements KeyListener, Runnable {
         // 왼쪽 화살표 키를 눌렀을 때 이미지의 x 좌표를 감소시켜 왼쪽으로 이동
         if (keyCode == KeyEvent.VK_LEFT) {
         	character_x -= 10;
+        	
         }
         // 오른쪽 화살표 키를 눌렀을 때 이미지의 x 좌표를 증가시켜 오른쪽으로 이동
         else if (keyCode == KeyEvent.VK_RIGHT) {
         	character_x += 10;
+        }
+        if(cnt) {
+        	Thread itemThread = new Thread(this);
+        	itemThread.start();
+        	cnt = false;
         }
         repaint(); // 이미지의 위치가 변경되었으므로 화면을 다시 그리도록 요청
     }
