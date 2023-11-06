@@ -1,29 +1,38 @@
-import javax.swing.*;
+import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-class TimerPanel extends JPanel {
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+public class TimePanel extends JPanel implements Runnable {
     private JLabel timerLabel;
-    private int remainingTimeInSeconds = 60; // 초기 시간 설정 (1분 = 60초)
+    private int timeRemaining;
 
-    public TimerPanel() {
-        timerLabel = new JLabel(String.valueOf(remainingTimeInSeconds)); // 숫자만 보이도록 설정
-        timerLabel.setFont(new Font("Arial", Font.BOLD, 48)); // 폰트 크기 조절
+    public TimePanel(int initialTime) {
+        this.timeRemaining = initialTime;
+        timerLabel = new JLabel(Integer.toString(timeRemaining));
+        timerLabel.setOpaque(false);	//투명
+        timerLabel.setFont(new Font("SansSerif", Font.PLAIN, 50));	//폰트 크기 조절
+        Dimension labelSize = new Dimension(60, 50); // 라벨 크기
+        timerLabel.setPreferredSize(labelSize);
         add(timerLabel);
 
-        Timer timer = new Timer(1000, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                remainingTimeInSeconds--;
-                if (remainingTimeInSeconds >= 0) {
-                    timerLabel.setText(String.valueOf(remainingTimeInSeconds));
-                } else {
-                    timerLabel.setText("시간 종료!");
-                    ((Timer) e.getSource()).stop(); // 타이머 중지
-                }
+        Thread timerThread = new Thread(this);
+        timerThread.start();
+    }
+
+    @Override
+    public void run() {
+        while (timeRemaining > 0) {
+            timeRemaining--;
+            timerLabel.setText(Integer.toString(timeRemaining));
+            try {
+                Thread.sleep(1000); // 1초 동안 기다림
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-        });
-        timer.start(); // 타이머 시작
+        }
+        // 시간이 다 되면 여기에 필요한 작업을 추가하세요.
+        // 예를 들어, 시험 종료 메시지 출력이나 결과 화면으로 전환하는 코드를 작성할 수 있습니다.
     }
 }

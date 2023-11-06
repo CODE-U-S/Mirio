@@ -1,4 +1,5 @@
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
@@ -20,7 +21,7 @@ import javax.swing.JPanel;
 //7. test지 일정 위치에서 멈추게 만들기.
 //8. 결과 화면으로 전환
 
-public class StudyPanel extends JPanel implements KeyListener, Runnable {
+public class StudyPanel extends JPanel implements KeyListener {
 	private BufferedImage backgroundtop;
 	private BufferedImage backgroundbottom;
     private BufferedImage image; // 이미지를 저장할 변수
@@ -50,7 +51,7 @@ public class StudyPanel extends JPanel implements KeyListener, Runnable {
     private int x;
     private int y;
     
-    private JLabel text_label;
+    public static JLabel text_time;
     private int initalTimer = 60;
 
     
@@ -84,7 +85,6 @@ public class StudyPanel extends JPanel implements KeyListener, Runnable {
     public StudyPanel() {
     	// 화면 전환
     	setLayout(new BorderLayout());
-    	TimerPanel timerPanel = new TimerPanel();
         try {
             // 이미지 파일을 로드합니다. 이미지 파일은 images 폴더에 있어야 함.
             image = ImageIO.read(new File("images/MirioClassLearnBackground.png"));
@@ -105,6 +105,13 @@ public class StudyPanel extends JPanel implements KeyListener, Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        text_time = new JLabel(String.valueOf(initalTimer));
+        text_time.setFont(new Font("Arial", Font.BOLD, 40)); // 원하는 폰트와 크기로 설정
+        text_time.setForeground(Color.WHITE); // 라벨 텍스트 색상 설정
+        text_time.setOpaque(false); // 라벨 배경 투명 설정
+        if (text_time != null) {
+            add(text_time, BorderLayout.NORTH); // 라벨을 패널의 상단에 추가
+        }
     }
 
     public void keyPressed(KeyEvent e) {
@@ -119,8 +126,46 @@ public class StudyPanel extends JPanel implements KeyListener, Runnable {
         	character_x += 10;
         }
         if(cnt) {
-        	Thread itemThread = new Thread(this);
-        	itemThread.start();
+        	new Thread(new Runnable() {
+				@Override
+				public void run() {
+					while(initalTimer > 0) {
+			            // 아이템의 y 좌표를 증가시켜 아이템을 아래로 떨어트림.
+			            y += itemSpeed;
+
+			            // 화면을 다시 그려서 아이템을 이동.
+			            repaint();
+
+			            // 일정 시간 동안 정지(밀리초 단위)
+			            try {
+			                Thread.sleep(50);
+			            } catch (InterruptedException e) {
+			                e.printStackTrace();
+			            }
+					}
+				}
+			}).start();
+        	
+        	new Thread(new Runnable() {
+				@Override
+				public void run() {
+					while(initalTimer >= 0) {
+			            text_time.setText(String.valueOf(initalTimer));
+			            initalTimer -= 1;
+
+			            // 화면을 다시 그려서 아이템을 이동.
+			            repaint();
+
+			            // 일정 시간 동안 정지(밀리초 단위)
+			            try {
+			                Thread.sleep(1000);
+			            } catch (InterruptedException e) {
+			                e.printStackTrace();
+			            }
+					}
+				}
+			}).start();
+        	
         	cnt = false;
         }
         repaint(); // 이미지의 위치가 변경되었으므로 화면을 다시 그리도록 요청
@@ -135,28 +180,11 @@ public class StudyPanel extends JPanel implements KeyListener, Runnable {
     public void keyTyped(KeyEvent e) {
         // 사용하지 않음 무조건 넣어줘야 오류가 안 남.
     }
-
-    public void run() {
-        while (true) {
-            // 아이템의 y 좌표를 증가시켜 아이템을 아래로 떨어트림.
-            y += itemSpeed;
-
-            // 화면을 다시 그려서 아이템을 이동.
-            repaint();
-
-            // 일정 시간 동안 정지(밀리초 단위)
-            try {
-                Thread.sleep(50);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
     
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        
         if (image != null) g.drawImage(image, 0, 0, 1200, 700, this);// 이미지를 패널에 그림.
         for(int i = 0; i < 9; i++) {
         	if(item[i] != null) {
