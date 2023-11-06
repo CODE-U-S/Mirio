@@ -6,6 +6,7 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.border.Border;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RunPanel extends JPanel {
@@ -30,8 +31,10 @@ public class RunPanel extends JPanel {
     private volatile boolean workerRunning = false; // SwingWorker가 실행 중인지를 추적하는 변수
     private SwingWorker<Void, Void> worker; // 메서드 바깥에 SwingWorker 선언
     
+    private List<Block> blocks; // 블록 객체를 보관할 List
     
     
+    //CharacterPanel에서 매개변수 받아옴
     public void setCharacterImage(String characterSelection) {
         this.playerD = characterSelection+ ".png";
         playerU = characterSelection+ "_up.png";;
@@ -65,8 +68,8 @@ public class RunPanel extends JPanel {
         runbtn.setBounds(700, 100, 425, 425); // 버튼의 위치와 크기를 설정
         add(runbtn); // 패널에 버튼을 추가
         
+        
         // 진행바
-       
         progressBar.setBounds(20, 20, 1145, 25);
         progressBar.setValue(100);
         progressBar.setForeground(Color.PINK);
@@ -142,7 +145,16 @@ public class RunPanel extends JPanel {
                 }
             }
         });
-    }
+        
+     
+        blocks = new ArrayList<>(); // 블록들을 담을 리스트 초기화
+        
+        // 블록 추가 - 게임에 맞게 값을 조정해주세요
+        blocks.add(new Block(200, 650, 100, 20)); // 예시 블록 - y값을 550으로 변경하여 블록을 낮춤
+        blocks.add(new Block(400, 600, 80, 20)); // 예시 블록 - y값을 500으로 변경하여 블록을 낮춤
+
+        
+    }// RunPanel
 
     private void moveRight() {
         new Thread(() -> {
@@ -234,6 +246,12 @@ public class RunPanel extends JPanel {
 
         // 캐릭터 이미지 그리기
         g.drawImage(player, x, y, this);
+        
+        // 블록 그리기
+        for (Block block : blocks) {
+            g.setColor(Color.GRAY); // 원하는 색상으로 조정
+            g.fillRect(block.getX(), block.getY(), block.getWidth(), block.getHeight());
+        }
     }
 
 }
