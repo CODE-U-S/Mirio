@@ -1,5 +1,9 @@
-import java.awt.*;
-import javax.swing.*;
+import java.awt.CardLayout;
+import java.awt.Toolkit;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 public class Main implements Runnable {
 
@@ -29,6 +33,10 @@ public class Main implements Runnable {
         cardPanel.add(runPanel, "RunPanel");
         cardPanel.add(studypanel, "StudyPanel");
 
+        cardPanel.setFocusable(true);
+        cardPanel.requestFocus();
+        cardPanel.addKeyListener(studypanel);
+        
         // 프레임에 cardPanel 추가
         frame.add(cardPanel);
 
