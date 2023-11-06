@@ -2,9 +2,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+
 import javax.swing.border.Border;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -145,32 +146,12 @@ public class RunPanel extends JPanel {
             }
         });
         
-        
      
         blocks = new ArrayList<>(); // 블록들을 담을 리스트 초기화
         
         // 블록 추가 - 게임에 맞게 값을 조정해주세요
         blocks.add(new Block(200, 650, 100, 20)); // 예시 블록 - y값을 550으로 변경하여 블록을 낮춤
         blocks.add(new Block(400, 600, 80, 20)); // 예시 블록 - y값을 500으로 변경하여 블록을 낮춤
-        blocks.add(new Block(600, 550, 100, 20)); // 예시 블록 - y값을 550으로 변경하여 블록을 낮춤
-        blocks.add(new Block(800, 500, 80, 20)); // 예시 블록 - y값을 500으로 변경하여 블록을 낮춤
-        
-        
-        // 패널에 키 리스너를 추가하여 키 이벤트를 처리
-        this.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                handleKeyPress(e);
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-                handleKeyRelease(e);
-            }
-        });
-
-        this.setFocusable(true);
-        this.requestFocusInWindow();
 
         
     }// RunPanel
@@ -203,7 +184,6 @@ public class RunPanel extends JPanel {
             }
         }).start();
     }
-
 
     private void moveLeft() {
         new Thread(() -> {
@@ -328,17 +308,6 @@ public class RunPanel extends JPanel {
                 isJump = true;
                 jump();
             }
-        }
-    }
-
-    // 키 뗌 이벤트 처리 메소드
-    private void handleKeyRelease(KeyEvent e) {
-        int key = e.getKeyCode();
-
-        if (key == KeyEvent.VK_RIGHT) {
-            isRight = false;
-        } else if (key == KeyEvent.VK_LEFT) {
-            isLeft = false;
         }
     }
 
