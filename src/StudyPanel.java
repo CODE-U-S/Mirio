@@ -5,7 +5,6 @@ import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Timer;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -13,14 +12,13 @@ import javax.swing.JPanel;
 //TODO
 //1. 아이템 밑으로 떨어지게 만들기
 //2. 아이템 캐릭터와 닿으면 사라지게 만들기
-//3. 스레드로 시간바 만들기
 //4. 시험 화면으로 전환
 //5. 이미지 삽입
 //6. test지 위로 올라가게 움직이기
 //7. test지 일정 위치에서 멈추게 만들기.
 //8. 결과 화면으로 전환
 
-public class StudyPanel extends JPanel implements KeyListener {
+public class StudyPanel extends JPanel implements KeyListener, Runnable {
 	private BufferedImage backgroundtop;
 	private BufferedImage backgroundbottom;
     private BufferedImage image; // 이미지를 저장할 변수
@@ -40,6 +38,7 @@ public class StudyPanel extends JPanel implements KeyListener {
     
     
     private BufferedImage[] item;
+    private int itemSpeed = 5;
     private static int randoms[] = new int[9];
 
     private int character_y = 550;
@@ -79,7 +78,7 @@ public class StudyPanel extends JPanel implements KeyListener {
     	// 화면 전환
     	setLayout(new BorderLayout());
         try {
-            // 이미지 파일을 로드합니다. 이미지 파일은 images 폴더에 있어야 합니다.
+            // 이미지 파일을 로드합니다. 이미지 파일은 images 폴더에 있어야 함.
             image = ImageIO.read(new File("images/MirioClassLearnBackground.png"));
             character_image = ImageIO.read(new File("images/character02.png"));
             backgroundtop = ImageIO.read(new File("images/Mirio_backgroundtop.png"));
@@ -98,7 +97,8 @@ public class StudyPanel extends JPanel implements KeyListener {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println("left");
+        Thread itemThread = new Thread(this);
+        itemThread.start();
     }
 
     public void keyPressed(KeyEvent e) {
@@ -124,10 +124,28 @@ public class StudyPanel extends JPanel implements KeyListener {
         // 사용하지 않음 무조건 넣어줘야 오류가 안 남.
     }
 
+    public void run() {
+        while (true) {
+            // 아이템의 y 좌표를 증가시켜 아이템을 아래로 떨어트림.
+            y += itemSpeed;
+
+            // 화면을 다시 그려서 아이템을 이동.
+            repaint();
+
+            // 일정 시간 동안 정지(밀리초 단위)
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if (image != null) g.drawImage(image, 0, 0, 1200, 700, this);// 이미지를 패널에 그립니다.
+        if (image != null) g.drawImage(image, 0, 0, 1200, 700, this);// 이미지를 패널에 그림.
         for(int i = 0; i < 9; i++) {
         	if(item[i] != null) {
         		g.drawImage(item[i], randoms[i], y, this);
