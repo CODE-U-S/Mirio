@@ -152,9 +152,6 @@ public class RunPanel extends JPanel {
         // 블록 추가 - 게임에 맞게 값을 조정해주세요
         blocks.add(new Block(200, 650, 100, 20)); // 예시 블록 - y값을 550으로 변경하여 블록을 낮춤
         blocks.add(new Block(400, 600, 80, 20)); // 예시 블록 - y값을 500으로 변경하여 블록을 낮춤
-        blocks.add(new Block(600, 550, 100, 20)); // 예시 블록 - y값을 550으로 변경하여 블록을 낮춤
-        blocks.add(new Block(800, 500, 80, 20)); // 예시 블록 - y값을 500으로 변경하여 블록을 낮춤
-        
         
         // 패널에 키 리스너를 추가하여 키 이벤트를 처리
         this.addKeyListener(new KeyAdapter() {
@@ -313,34 +310,54 @@ public class RunPanel extends JPanel {
         });
     }
     
- // 키 누름 이벤트 처리 메소드
-    private void handleKeyPress(KeyEvent e) {
-        int key = e.getKeyCode();
+    private int xSpeed = 0; // 플레이어의 가로 속도
 
-        if (key == KeyEvent.VK_RIGHT) {
-            isRight = true;
-            moveRight();
-        } else if (key == KeyEvent.VK_LEFT) {
-            isLeft = true;
-            moveLeft();
-        } else if (key == KeyEvent.VK_UP) {
-            if (!isJump) {
-                isJump = true;
-                jump();
-            }
-        }
-    }
+ // xSpeed에 따라 플레이어의 x 위치를 업데이트
+ private void updatePlayerPosition() {
+     x += xSpeed;
+     setPlayerLocation();
+ }
 
-    // 키 뗌 이벤트 처리 메소드
-    private void handleKeyRelease(KeyEvent e) {
-        int key = e.getKeyCode();
+ private void handleKeyPress(KeyEvent e) {
+     int key = e.getKeyCode();
 
-        if (key == KeyEvent.VK_RIGHT) {
-            isRight = false;
-        } else if (key == KeyEvent.VK_LEFT) {
-            isLeft = false;
-        }
-    }
+     if (key == KeyEvent.VK_RIGHT) {
+         xSpeed = SPEED; // 오른쪽으로 이동
+     } else if (key == KeyEvent.VK_LEFT) {
+         xSpeed = -SPEED; // 왼쪽으로 이동
+     } else if (key == KeyEvent.VK_UP) {
+         if (!isJump) {
+             isJump = true;
+             jump();
+         }
+     }
+     // 여기서 플레이어 위치를 업데이트하는 메서드를 호출합니다
+     updatePlayerPosition();
+ }
+
+ private void handleKeyRelease(KeyEvent e) {
+     int key = e.getKeyCode();
+
+     if (key == KeyEvent.VK_RIGHT || key == KeyEvent.VK_LEFT) {
+         xSpeed = 0; // 수평 이동 멈춤
+     }
+     // 여기서 플레이어 위치를 업데이트하는 메서드를 호출합니다
+     updatePlayerPosition();
+ }
+
+//블록을 위로 이동시키는 메서드
+private void moveBlocksUpwards() {
+  Timer timer = new Timer(100, e -> {
+      for (Block block : blocks) {
+          // 여기에서 블록의 위치를 업데이트합니다
+          block.setY(block.getY() - 2); // 필요에 따라 값을 조정해주세요
+      }
+      repaint(); // 블록 위치를 업데이트한 후 패널을 다시 그립니다
+  });
+  timer.start();
+}
+
+
 
     @Override
     protected void paintComponent(Graphics g) {
