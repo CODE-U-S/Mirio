@@ -131,19 +131,19 @@ public class StudyPanel extends JPanel implements KeyListener {
 				public void run() {
 					while(initalTimer > 0) {
 			            // 아이템의 y 좌표를 증가시켜 아이템을 아래로 떨어트림.
-			            
 			            for (int i = 0; i < 9; i++) {
 			            	y += itemSpeed;
 			                if (y > getHeight()) {
 			                    y = -50; // 화면 밖으로 나가면 다시 위로 이동
 			                    for(int j = 0; j < 9; j++) {
+			                    	
 			                    	randoms[j] = (int) (Math.random() * (1000 - (60))+120);
 			                    	//60은 아이템이 테두리 밖으로 나가지 못하도록 구역을 정해준 것.	                    	
 			                    }
-			                }
+			                }			                
+			                repaint();
 			            }
 			            // 화면을 다시 그려서 아이템을 이동.
-			            repaint();
 
 			            // 일정 시간 동안 정지(밀리초 단위)
 			            try {
