@@ -1,9 +1,12 @@
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -22,6 +25,9 @@ import javax.swing.JPanel;
 //8. 결과 화면으로 전환
 
 public class StudyPanel extends JPanel implements KeyListener {
+	private CardLayout cardLayout; // 화면 전환
+    private JPanel cardPanel; // 화면 전환
+    
 	private BufferedImage backgroundtop;
 	private BufferedImage backgroundbottom;
     private BufferedImage image; // 이미지를 저장할 변수
@@ -82,7 +88,21 @@ public class StudyPanel extends JPanel implements KeyListener {
 
     
     // 이미지 파일 로드
-    public StudyPanel() {
+    public StudyPanel(CardLayout cardLayout, JPanel cardPanel) {
+    	 this.cardLayout = cardLayout;
+         this.cardPanel = cardPanel;
+         
+         // MouseListener로 화면 전환
+         addMouseListener(new MouseAdapter() {
+             @Override
+             public void mouseClicked(MouseEvent e) {
+                 // 마우스 왼쪽 버튼을 클릭했을 때 화면 전환: ExplanationPanel에서 RunPanel로 전환
+                 cardLayout.show(cardPanel, "TestPanel");
+             }
+         });
+
+         setFocusable(true); // 패널이 키 이벤트를 받을 수 있도록 설정
+         
     	// 화면 전환
     	setLayout(new BorderLayout());
         try {

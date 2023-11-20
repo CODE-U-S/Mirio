@@ -23,8 +23,9 @@ public class Main implements Runnable {
         StartPanel startPanel = new StartPanel(cardLayout, cardPanel);
         CharacterPanel characterPanel = new CharacterPanel(cardLayout, cardPanel, runPanel);
         ExplanationPanel explanationPanel = new ExplanationPanel(cardLayout, cardPanel);
+        StudyPanel studypanel = new StudyPanel(cardLayout, cardPanel);
+        TestPanel testPanel = new TestPanel(cardLayout, cardPanel);
         
-        StudyPanel studypanel = new StudyPanel();
 
         // 패널을 cardPanel에 추가
         cardPanel.add(startPanel, "StartPanel");
@@ -32,6 +33,7 @@ public class Main implements Runnable {
         cardPanel.add(explanationPanel, "ExplanationPanel");
         cardPanel.add(runPanel, "RunPanel");
         cardPanel.add(studypanel, "StudyPanel");
+        cardPanel.add(testPanel, "TestPanel");
 
         cardPanel.setFocusable(true);
         cardPanel.requestFocus();
