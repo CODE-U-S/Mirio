@@ -136,7 +136,10 @@ public class StudyPanel extends JPanel implements KeyListener {
 			            	y += itemSpeed;
 			                if (y > getHeight()) {
 			                    y = -50; // 화면 밖으로 나가면 다시 위로 이동
-			                    randoms[i] = (int) (Math.random() * (1000 - (character_x + 120))) + character_x;
+			                    for(int j = 0; j < 9; j++) {
+			                    	randoms[j] = (int) (Math.random() * (1000 - (60))+120);
+			                    	//60은 아이템이 테두리 밖으로 나가지 못하도록 구역을 정해준 것.	                    	
+			                    }
 			                }
 			            }
 			            // 화면을 다시 그려서 아이템을 이동.
