@@ -105,8 +105,8 @@ public class StudyPanel extends JPanel implements KeyListener {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        text_time = new JLabel(String.valueOf(initalTimer));
-        text_time.setFont(new Font("Arial", Font.BOLD, 40)); // 원하는 폰트와 크기로 설정
+        text_time = new JLabel(String.valueOf(initalTimer));//text_time을 60초로 초기화
+        text_time.setFont(new Font("Arial", Font.BOLD, 60)); // 원하는 폰트와 크기로 설정
         text_time.setForeground(Color.WHITE); // 라벨 텍스트 색상 설정
         text_time.setOpaque(false); // 라벨 배경 투명 설정
         if (text_time != null) {
@@ -131,14 +131,20 @@ public class StudyPanel extends JPanel implements KeyListener {
 				public void run() {
 					while(initalTimer > 0) {
 			            // 아이템의 y 좌표를 증가시켜 아이템을 아래로 떨어트림.
-			            y += itemSpeed;
-
+			            
+			            for (int i = 0; i < 9; i++) {
+			            	y += itemSpeed;
+			                if (y > getHeight()) {
+			                    y = -50; // 화면 밖으로 나가면 다시 위로 이동
+			                    randoms[i] = (int) (Math.random() * (1000 - (character_x + 120))) + character_x;
+			                }
+			            }
 			            // 화면을 다시 그려서 아이템을 이동.
 			            repaint();
 
 			            // 일정 시간 동안 정지(밀리초 단위)
 			            try {
-			                Thread.sleep(50);
+			                Thread.sleep(100);
 			            } catch (InterruptedException e) {
 			                e.printStackTrace();
 			            }
