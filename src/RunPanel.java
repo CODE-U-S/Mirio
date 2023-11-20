@@ -31,9 +31,9 @@ public class RunPanel extends JPanel {
     private volatile boolean workerRunning = false; // SwingWorker가 실행 중인지를 추적하는 변수
     private SwingWorker<Void, Void> worker; // 메서드 바깥에 SwingWorker 선언
     
-    private List<Block> blocks = new ArrayList<>(); // 블록
-    
     private Timer movementTimer; 
+    
+    private List<Block> blocks = new ArrayList<>(); // 블록
     
     public void setCharacterImage(String characterSelection) {
         this.playerD = characterSelection+ ".png";
@@ -47,7 +47,7 @@ public class RunPanel extends JPanel {
     	this.cardLayout = cardLayout;
         this.cardPanel = cardPanel;
         setFocusable(true); // 패널이 포커스를 받을 수 있도록 함
-        // setPreferredSize(new Dimension(1000, 640)); // 패널의 크기 설정
+       // setPreferredSize(new Dimension(1000, 640)); // 패널의 크기 설정
         
         // 배경 이미지 로드
         backgroundImage = new ImageIcon("images/run.png").getImage();
@@ -69,6 +69,7 @@ public class RunPanel extends JPanel {
         add(runbtn); // 패널에 버튼을 추가
         
         // 진행바
+       
         progressBar.setBounds(20, 20, 1145, 25);
         progressBar.setValue(100);
         progressBar.setForeground(Color.PINK);
@@ -107,28 +108,17 @@ public class RunPanel extends JPanel {
         });
         movementTimer.start();
         
-        // Add a block (example)
+        // 블록 추가 예시
         Block block1 = new Block(200, 600, 100, 20);
         addBlock(block1);
-        Block block2 = new Block(300, 400, 100, 20);
+        Block block2 = new Block(300, 500, 100, 20);
         addBlock(block2);
-        Block block3 = new Block(400, 300, 100, 20);
+        Block block3 = new Block(400, 400, 100, 20);
         addBlock(block3);
-        Block block4 = new Block(500, 100, 100, 20);
+        Block block4 = new Block(500, 300, 100, 20);
         addBlock(block4);
-        Block block5 = new Block(600, 5000, 100, 20);
+        Block block5 = new Block(600, 200, 100, 20);
         addBlock(block5);
-        Block block6 = new Block(300, 630, 100, 20);
-        addBlock(block6);
-        Block block7 = new Block(350, 550, 100, 20);
-        addBlock(block7);
-        Block block8 = new Block(460, 430, 100, 20);
-        addBlock(block8);
-        Block block9 = new Block(700, 130, 100, 20);
-        addBlock(block9);
-        Block block10 = new Block(800, 250, 100, 20);
-        addBlock(block10);
-        
 
         InputMap inputMap = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
         ActionMap actionMap = getActionMap();
@@ -185,32 +175,31 @@ public class RunPanel extends JPanel {
     private void moveRight() {
         isRight = true;
         isLeft = false;
-        int panelWidth = getWidth(); // Get the width of the panel
-
-        if (x + player.getWidth(null) + SPEED <= panelWidth) {
-            x += SPEED;
-            setPlayerLocation();
+        // 진행바 실행
+        if (!workerRunning) {
+            workerRunning = true; // SwingWorker가 실행 중임을 나타내는 플래그를 설정합니다
+            worker.execute(); // SwingWorker 실행
+            //workerRunning = false; // 움직임이 끝나면 SwingWorker 플래그를 재설정합니다
         }
+        
     }
 
     private void moveLeft() {
         isLeft = true;
         isRight = false;
-
-        if (x - SPEED >= 0) {
-            x -= SPEED;
-            setPlayerLocation();
-        }
     }
     
     private void stopMovement() {
         isLeft = false;
         isRight = false;
     }
+    
+    private boolean isJumping; // 캐릭터가 점프 중인지 여부를 나타내는 변수
+
 
     private void moveJump() {
         isJump = true;
-
+        
         // Change player image
         player = new ImageIcon(playerU).getImage();
 
@@ -224,12 +213,9 @@ public class RunPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (currentJumpHeight < jumpDuration) {
-                    // Check if the character is on a block
-                    if (!isOnBlock()) {
-                        y -= jumpSpeed;
-                        setPlayerLocation();
-                        currentJumpHeight++;
-                    }
+                    y -= jumpSpeed;
+                    setPlayerLocation();
+                    currentJumpHeight++;
                 } else {
                     ((Timer) e.getSource()).stop();
 
@@ -238,8 +224,7 @@ public class RunPanel extends JPanel {
 
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            // Check if the character is on a block
-                            if (!isOnBlock()) {
+                            if (currentFallHeight < jumpDuration) {
                                 y += jumpSpeed;
                                 setPlayerLocation();
                                 currentFallHeight++;
@@ -259,43 +244,23 @@ public class RunPanel extends JPanel {
         });
         jumpTimer.start();
     }
-    
-    
-    
-    private boolean isOnBlock() {
-        for (Block block : blocks) {
-            ImageIcon playerIcon = new ImageIcon(playerD);
-            if (y >= block.getY() - playerIcon.getIconHeight() && y <= block.getY() + block.getHeight()
-                    && x >= block.getX() - playerIcon.getIconWidth() && x <= block.getX() + block.getWidth()) {
-                // Character is on a block
-                return true;
-            }
-        }
-        // Character is not on any block
-        return false;
-    }
+
+
 
     private void setPlayerLocation() {
         SwingUtilities.invokeLater(() -> {
-            // Check if the character is within the panel boundaries
-            if (x < 0) {
-                x = 0;
-            } else if (x + player.getWidth(null) > getWidth()) {
-                x = getWidth() - player.getWidth(null);
-            }
-
             repaint();
         });
     }
     
+    // 블록을 추가하는 메서드
     private void addBlock(Block block) {
         blocks.add(block);
     }
-
+    
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        
         
         // 배경 이미지 그리기
         g.drawImage(backgroundImage, 0, 0, this);
