@@ -33,17 +33,16 @@ public class StudyPanel extends JPanel implements KeyListener {
     private BufferedImage image; // 이미지를 저장할 변수
     private BufferedImage character_image;
     
-    private BufferedImage food_cake;
-    private BufferedImage food_pang;
-    private BufferedImage food_egg;
+    private BufferedImage airpods_icon;
+    private BufferedImage apple_icon;
+    private BufferedImage badminton_icon;
     
-    private BufferedImage good_english;
-    private BufferedImage good_jsp;
-    private BufferedImage good_cpp;
-    private BufferedImage good_luck;
-    
-    private BufferedImage bad_card;
-    private BufferedImage bad_chip;    
+    private BufferedImage ball_icon;
+    private BufferedImage ipad_icon;
+    private BufferedImage food_icon;
+    private BufferedImage pillow_icon;
+    private BufferedImage joycon_icon;
+    private BufferedImage youtube;    
     
     
     private BufferedImage[] item;
@@ -55,7 +54,7 @@ public class StudyPanel extends JPanel implements KeyListener {
     
     private boolean cnt = true;
     private int x;
-    private int y;
+    private int y = -10;
     
     public static JLabel text_time;
     private int initalTimer = 60;
@@ -112,15 +111,15 @@ public class StudyPanel extends JPanel implements KeyListener {
             backgroundtop = ImageIO.read(new File("images/Mirio_backgroundtop.png"));
             backgroundbottom = ImageIO.read(new File("images/Mirio_backgroundBottom.png"));
             item = new BufferedImage[] {
-                    ImageIO.read(new File("images/cake.png")),
-                    ImageIO.read(new File("images/pang.png")),
-                    ImageIO.read(new File("images/egg.png")),
-                    ImageIO.read(new File("images/english.png")),
-                    ImageIO.read(new File("images/jsp.png")),
-                    ImageIO.read(new File("images/cpp.png")),
-                    ImageIO.read(new File("images/luck.png")),
-                    ImageIO.read(new File("images/card.png")),
-                    ImageIO.read(new File("images/chip.png"))
+                    ImageIO.read(new File("images/airpods_icon.png")),
+                    ImageIO.read(new File("images/apple_icon.png")),
+                    ImageIO.read(new File("images/badminton_icon.png")),
+                    ImageIO.read(new File("images/ball_icon.png")),
+                    ImageIO.read(new File("images/food_icon.png")),
+                    ImageIO.read(new File("images/ipad_icon.png")),
+                    ImageIO.read(new File("images/joycon_icon.png")),
+                    ImageIO.read(new File("images/pillow_icon.png")),
+                    ImageIO.read(new File("images/youtube_icon.png"))
             };
         } catch (IOException e) {
             e.printStackTrace();
@@ -157,13 +156,13 @@ public class StudyPanel extends JPanel implements KeyListener {
 			                    y = -50; // 화면 밖으로 나가면 다시 위로 이동
 			                    for(int j = 0; j < 9; j++) {
 			                    	
-			                    	randoms[j] = (int) (Math.random() * (1000 - (60))+120);
+			                    	randoms[j] = (int) (Math.random() * (1000 - (80))+60);
 			                    	//60은 아이템이 테두리 밖으로 나가지 못하도록 구역을 정해준 것.	                    	
 			                    }
 			                }			                
+			                // 화면을 다시 그려서 아이템을 이동.
 			                repaint();
 			            }
-			            // 화면을 다시 그려서 아이템을 이동.
 
 			            // 일정 시간 동안 정지(밀리초 단위)
 			            try {
