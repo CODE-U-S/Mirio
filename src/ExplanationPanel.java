@@ -21,7 +21,7 @@ public class ExplanationPanel extends JPanel {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
+
         // MouseListener로 화면 전환
         addMouseListener(new MouseAdapter() {
             @Override
