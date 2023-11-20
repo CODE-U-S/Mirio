@@ -30,7 +30,7 @@ public class RunPanel extends JPanel {
     private volatile boolean workerRunning = false; // SwingWorker가 실행 중인지를 추적하는 변수
     private SwingWorker<Void, Void> worker; // 메서드 바깥에 SwingWorker 선언
     
-    
+    private Timer movementTimer; 
     
     public void setCharacterImage(String characterSelection) {
         this.playerD = characterSelection+ ".png";
@@ -91,6 +91,20 @@ public class RunPanel extends JPanel {
             }
         };
         
+        movementTimer = new Timer(10, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (isRight) {
+                    x += SPEED;
+                } else if (isLeft) {
+                    x -= SPEED;
+                }
+
+                setPlayerLocation();
+            }
+        });
+        movementTimer.start();
+        
 
         InputMap inputMap = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
         ActionMap actionMap = getActionMap();
@@ -145,78 +159,72 @@ public class RunPanel extends JPanel {
     }
 
     private void moveRight() {
-        new Thread(() -> {
-            if (!workerRunning) {
-                workerRunning = true; // SwingWorker가 실행 중임을 나타내는 플래그를 설정합니다
-                worker.execute(); // SwingWorker 실행
-                
-                while (isRight) {
-                    x += SPEED; // 이동 속도를 적용하여 x 값을 변경합니다
-                    setPlayerLocation();
-                    try {
-                        Thread.sleep(10);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-                workerRunning = false; // 움직임이 끝나면 SwingWorker 플래그를 재설정합니다
-            }
-        }).start();
+        isRight = true;
+        isLeft = false;
+        // 진행바 실행
+        if (!workerRunning) {
+            workerRunning = true; // SwingWorker가 실행 중임을 나타내는 플래그를 설정합니다
+            worker.execute(); // SwingWorker 실행
+            //workerRunning = false; // 움직임이 끝나면 SwingWorker 플래그를 재설정합니다
+        }
     }
 
     private void moveLeft() {
-        new Thread(() -> {
-            while (isLeft) {
-                x -= SPEED;
-                setPlayerLocation();
-                try {
-                    Thread.sleep(10);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
+        isLeft = true;
+        isRight = false;
+    }
+    
+    private void stopMovement() {
+        isLeft = false;
+        isRight = false;
     }
 
     private void moveJump() {
         isJump = true;
         
-        // 플레이어 이미지 변경
+        // Change player image
         player = new ImageIcon(playerU).getImage();
-        
-        new Thread(() -> {
-            for (int i = 0; i < 130 / JUMPSPEED; i++) {
-                y -= JUMPSPEED;
-                setPlayerLocation();
-                try {
-                    Thread.sleep(2);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+
+        int jumpHeight = 130;
+        int jumpSpeed = JUMPSPEED;
+        int jumpDuration = jumpHeight / jumpSpeed;
+
+        Timer jumpTimer = new Timer(2, new ActionListener() {
+            private int currentJumpHeight = 0;
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (currentJumpHeight < jumpDuration) {
+                    y -= jumpSpeed;
+                    setPlayerLocation();
+                    currentJumpHeight++;
+                } else {
+                    ((Timer) e.getSource()).stop();
+
+                    Timer fallTimer = new Timer(3, new ActionListener() {
+                        private int currentFallHeight = 0;
+
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            if (currentFallHeight < jumpDuration) {
+                                y += jumpSpeed;
+                                setPlayerLocation();
+                                currentFallHeight++;
+                            } else {
+                                ((Timer) e.getSource()).stop();
+                                isJump = false;
+
+                                // Change player image to default image in the swing thread
+                                player = new ImageIcon(playerD).getImage();
+                                repaint();
+                            }
+                        }
+                    });
+                    fallTimer.start();
                 }
             }
-
-            try {
-                Thread.sleep(60);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            for (int i = 0; i < 130 / JUMPSPEED; i++) {
-                y += JUMPSPEED;
-                setPlayerLocation();
-                try {
-                    Thread.sleep(3);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-            isJump = false;
-            // 스윙 스레드에서 플레이어 이미지를 기본 이미지로 변경
-            SwingUtilities.invokeLater(() -> {
-                player = new ImageIcon(playerD).getImage();
-                repaint();
-            });
-        }).start();
+        });
+        jumpTimer.start();
     }
 
     private void setPlayerLocation() {
