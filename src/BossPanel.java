@@ -1,7 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -40,7 +39,8 @@ public class BossPanel extends JPanel {
     private Timer movementTimer; 
     private Timer javaImageTimer;
     
-    private Image interviewerImage; // 보스
+    private Image boss; // 보스
+    private int bossHealth; // 보스의 체력
 
     public void setCharacterImage(String characterSelection) {
         this.playerD = characterSelection + ".png";
@@ -56,13 +56,14 @@ public class BossPanel extends JPanel {
             // 이미지 파일을 불러옵니다. 이미지 파일은 images 폴더에 있어야 합니다.
         	backgroundImage = ImageIO.read(new File("images/boss/test.png"));
         	javaImage = ImageIO.read(new File("images/boss/java.png"));
-        	interviewerImage = ImageIO.read(new File("images/boss/Interviewer01.png"));
+        	boss = ImageIO.read(new File("images/boss/Interviewer01.png"));
         	
         } catch (IOException e) {
             e.printStackTrace();
         }
         
         javaThreads = new ArrayList<>();
+        bossHealth = 100; // 초기 체력 설정
         
         movementTimer = new Timer(10, new ActionListener() {
             @Override
@@ -208,11 +209,11 @@ public class BossPanel extends JPanel {
         
     }
     
-
-
     private void setPlayerLocation() {
         SwingUtilities.invokeLater(() -> {
             repaint();
+            checkCollision();
+            checkBossHealth(); // 각 프레임마다 보스 체력 확인
         });
     }
     
@@ -259,6 +260,29 @@ public class BossPanel extends JPanel {
             return javaY;
         }
     }
+    
+    private void checkCollision() {
+        // 자바 스레드와 보스의 충돌을 확인하고 충돌 시 스레드를 제거하고 보스의 체력을 감소시킵니다.
+        Rectangle bossBounds = new Rectangle(880, 30, 250, 600);
+
+        for (JavaThread javaThread : javaThreads) {
+            Rectangle javaBounds = new Rectangle(javaThread.getJavaX(), javaThread.getJavaY(), JAVA_IMAGE_SIZE, JAVA_IMAGE_SIZE);
+
+            if (javaBounds.intersects(bossBounds)) {
+                javaThreads.remove(javaThread);
+                bossHealth -= 1; // 보스의 체력 감소
+                return;
+            }
+        }
+    }
+
+    private void checkBossHealth() {
+        // 보스의 체력이 0 이하로 떨어지면 게임 오버 또는 다른 처리를 수행할 수 있습니다.
+        if (bossHealth <= 0) {
+            // 게임 오버 또는 다른 처리
+        }
+    }
+
 
    
     @Override
@@ -266,9 +290,22 @@ public class BossPanel extends JPanel {
         super.paintComponent(g);
         g.drawImage(backgroundImage, 0, 0, this);
         g.drawImage(player, x, y, this);
-        g.drawImage(interviewerImage, 880, 30, 250, 600, this);
+        g.drawImage(boss, 900, 30, 250, 600, this);
+      
+        // 히어로 텍스트 그리기
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Arial", Font.BOLD, 30));
+        g.drawString("Hero", 1000, 50);
+        
+        // 숫자로 보스의 체력 표시
+        g.drawString(String.valueOf(bossHealth), 990, 675);
+        
+        // 그래픽으로 보스의 체력 그리기
+        g.setColor(Color.RED);
+        g.fillRect(1050, 650, bossHealth, 30);
+        
 
-     // 모든 Java 스레드를 그립니다.
+        // 모든 Java 스레드를 그립니다.
         for (JavaThread javaThread : javaThreads) {
             g.drawImage(javaImage, javaThread.getJavaX(), javaThread.getJavaY(), JAVA_IMAGE_SIZE, JAVA_IMAGE_SIZE, this);
         }
