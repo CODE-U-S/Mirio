@@ -22,9 +22,9 @@ public class Main implements Runnable {
         RunPanel runPanel = new RunPanel(cardLayout, cardPanel); // 이 부분은 수정하지 않음
         BossPanel bossPanel = new BossPanel(cardLayout, cardPanel);
         StartPanel startPanel = new StartPanel(cardLayout, cardPanel);
-        CharacterPanel characterPanel = new CharacterPanel(cardLayout, cardPanel, runPanel, bossPanel);
-        ExplanationPanel explanationPanel = new ExplanationPanel(cardLayout, cardPanel);
         StudyPanel studypanel = new StudyPanel(cardLayout, cardPanel);
+        CharacterPanel characterPanel = new CharacterPanel(cardLayout, cardPanel, runPanel, bossPanel, studypanel);
+        ExplanationPanel explanationPanel = new ExplanationPanel(cardLayout, cardPanel);
         TestPanel testPanel = new TestPanel(cardLayout, cardPanel);
         
         

@@ -28,7 +28,7 @@ public class CharacterPanel extends JPanel {
     MusicPlayer musicPlayer = new MusicPlayer(); //효과음 음악플레이어
 
     
-    public CharacterPanel(CardLayout cardLayout, JPanel cardPanel, RunPanel runPanel, BossPanel bossPanel) {
+    public CharacterPanel(CardLayout cardLayout, JPanel cardPanel, RunPanel runPanel, BossPanel bossPanel, StudyPanel studyPanel) {
         this.cardLayout = cardLayout;
         this.cardPanel = cardPanel;
         this.runPanel = runPanel; // RunPanel 객체를 저장
@@ -71,6 +71,7 @@ public class CharacterPanel extends JPanel {
                 String characterselect = "images/jinseon";
                 runPanel.setCharacterImage(characterselect);
                 bossPanel.setCharacterImage(characterselect);
+                studyPanel.setCharacterImage(characterselect);
                 cardLayout.show(cardPanel, "ExplanationPanel");
             }
         });
@@ -108,6 +109,7 @@ public class CharacterPanel extends JPanel {
                 String characterselect = "images/sunhee";
                 runPanel.setCharacterImage(characterselect);
                 bossPanel.setCharacterImage(characterselect);
+                studyPanel.setCharacterImage(characterselect);
                 cardLayout.show(cardPanel, "ExplanationPanel");
             }
         });
