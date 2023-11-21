@@ -17,6 +17,8 @@ public class CharacterPanel extends JPanel {
     private CardLayout cardLayout; //화면 전환
     private JPanel cardPanel; // 화면 전환
     private RunPanel runPanel;
+    private BossPanel bossPanel;
+    
     
     private ImageIcon jinseon;
     private ImageIcon jinseonC;
@@ -26,10 +28,11 @@ public class CharacterPanel extends JPanel {
     MusicPlayer musicPlayer = new MusicPlayer(); //효과음 음악플레이어
 
     
-    public CharacterPanel(CardLayout cardLayout, JPanel cardPanel, RunPanel runPanel) {
+    public CharacterPanel(CardLayout cardLayout, JPanel cardPanel, RunPanel runPanel, BossPanel bossPanel) {
         this.cardLayout = cardLayout;
         this.cardPanel = cardPanel;
         this.runPanel = runPanel; // RunPanel 객체를 저장
+        this.bossPanel = bossPanel; // BossPanel 객체를 저장
         try {
             // 이미지 파일을 로드합니다. 이미지 파일은 images 폴더에 있어야 합니다.
             image = ImageIO.read(new File("images/character_main.png"));
@@ -67,6 +70,7 @@ public class CharacterPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 String characterselect = "images/jinseon";
                 runPanel.setCharacterImage(characterselect);
+                bossPanel.setCharacterImage(characterselect);
                 cardLayout.show(cardPanel, "ExplanationPanel");
             }
         });
@@ -103,6 +107,7 @@ public class CharacterPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 String characterselect = "images/sunhee";
                 runPanel.setCharacterImage(characterselect);
+                bossPanel.setCharacterImage(characterselect);
                 cardLayout.show(cardPanel, "ExplanationPanel");
             }
         });

@@ -20,12 +20,13 @@ public class Main implements Runnable {
 
         // 각 패널을 생성
         RunPanel runPanel = new RunPanel(cardLayout, cardPanel); // 이 부분은 수정하지 않음
+        BossPanel bossPanel = new BossPanel(cardLayout, cardPanel);
         StartPanel startPanel = new StartPanel(cardLayout, cardPanel);
-        CharacterPanel characterPanel = new CharacterPanel(cardLayout, cardPanel, runPanel);
+        CharacterPanel characterPanel = new CharacterPanel(cardLayout, cardPanel, runPanel, bossPanel);
         ExplanationPanel explanationPanel = new ExplanationPanel(cardLayout, cardPanel);
         StudyPanel studypanel = new StudyPanel(cardLayout, cardPanel);
         TestPanel testPanel = new TestPanel(cardLayout, cardPanel);
-        BossPanel bossPanel = new BossPanel(cardLayout, cardPanel);
+        
         
 
         // 패널을 cardPanel에 추가

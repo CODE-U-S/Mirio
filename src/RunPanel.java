@@ -47,6 +47,7 @@ public class RunPanel extends JPanel {
     
     private int score = 0;
     
+    // 캐릭터 이미지 받기
     public void setCharacterImage(String characterSelection) {
         this.playerD = characterSelection+ ".png";
         playerU = characterSelection+ "_up.png";;
