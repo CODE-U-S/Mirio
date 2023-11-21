@@ -95,6 +95,11 @@ public class TestPanel extends JPanel {
 		            				}
 		            				repaint();
 		            			}
+		            			ResultPanel resultPanel = new ResultPanel(cardLayout, cardPanel);
+		                        resultPanel.setBounds(350, 100, 500, 500); // Adjust the position and size
+		                        add(resultPanel, 0); // Add the ResultPanel on top of TestPanel
+		                        revalidate();
+		                        repaint();
 	            			}
 	            		}
 	            	}).start();
