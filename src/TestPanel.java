@@ -1,10 +1,15 @@
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.CardLayout;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+
 import javax.imageio.ImageIO;
+import javax.swing.JButton;
+import javax.swing.JPanel;
 
 public class TestPanel extends JPanel {
 	
@@ -15,12 +20,12 @@ public class TestPanel extends JPanel {
     private JPanel cardPanel; // 화면 전환
 
     int y = 300;
-    int count;
+    boolean count = true;
     
     public TestPanel(CardLayout cardLayout, JPanel cardPanel) {
         this.cardLayout = cardLayout;
         this.cardPanel = cardPanel;
-
+        //JButton n1 = new JButton(new Image("images/black.png"));
         try {
             // 이미지 파일을 불러옵니다. 이미지 파일은 images 폴더에 있어야 합니다.
             backgroundTop = ImageIO.read(new File("images/testpanel_backgroundTop.png"));
@@ -34,23 +39,30 @@ public class TestPanel extends JPanel {
             	new Thread(new Runnable() {
             		@Override
             		public void run() {
-            			while(y <= 300 && y >= -1878) {
-            				y -= 2;    				
-            				System.out.println(y);
-            				try {
-            					if(y == 48 || y == -178 || y == -438 || y == -678 || y == -908 || y == -1158 || y == -1400 || y == -1638 || y == -1878){//omr 종이 이동
-            						Thread.sleep(1000);
-            					} else {            						
-            						Thread.sleep(5);
-            					}
-            					
-            				} catch (InterruptedException e) {
-            					e.printStackTrace();
-            				}
-            				repaint();
+            			if (count) {
+            				count = false;	//한번만 실행
+	            			while(y <= 300 && y >= -1878) {
+	            				y -= 2;    				
+	            				System.out.println(count);
+	            				try {//omr 종이 이동 멈추는 지점
+	            					if(y == 48 || y == -178 || y == -438 || y == -678 || y == -908 || y == -1158 || y == -1400 || y == -1638 || y == -1878){
+	            						Thread.sleep(1000);
+	            					} else {            						
+	            						Thread.sleep(5);
+	            					}
+	            					
+	            				} catch (InterruptedException e) {
+	            					e.printStackTrace();
+	            				}
+	            				repaint();
+	            			}
             			}
             		}
             	}).start();
+            	new Thread(new Runnable() {
+            		public void run() {
+            		}
+            	});
         	}
         });
         
