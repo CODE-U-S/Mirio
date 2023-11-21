@@ -121,7 +121,7 @@ public class BossPanel extends JPanel {
         });
         
         arrowThreads = new ArrayList<>();
-        arrowTimer = new Timer(6000, new ActionListener() { // Timer set for every 6 seconds (6000 milliseconds)
+        arrowTimer = new Timer(1500, new ActionListener() { // Timer set for every 6 seconds (6000 milliseconds)
             @Override
             public void actionPerformed(ActionEvent e) {
                 shootArrows();
@@ -308,7 +308,7 @@ public class BossPanel extends JPanel {
 
         for (int i = 0; i < 10; i++) {
             int arrowX = bossX;
-            int arrowY = bossY + random.nextInt(100); // Randomize the vertical position within a range
+            int arrowY = random.nextInt(1200); // Randomize the vertical position within a range
 
             ArrowThread arrowThread = new ArrowThread(arrowX, arrowY, arrowSpeed);
             arrowThreads.add(arrowThread);
@@ -329,11 +329,11 @@ public class BossPanel extends JPanel {
 
         @Override
         public void run() {
-            while (arrowX > 0) {
+            while (arrowX > -200) {
                 arrowX -= arrowSpeed;
 
                 // Arrow image is out of bounds, remove the thread
-                if (arrowX < 0) {
+                if (arrowX < -200 || arrowX > getWidth()) {
                     arrowThreads.remove(this);
                     return;
                 }
