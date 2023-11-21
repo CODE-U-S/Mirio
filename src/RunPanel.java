@@ -24,8 +24,8 @@ public class RunPanel extends JPanel {
     private boolean isLeft; // 왼쪽 방향 키가 눌렸는지 확인
     private boolean isJump; // 점프 중인지 확인
 
-    private static final int JUMPSPEED = 2; // 점프 속도
-    private static final int SPEED = 3; // 이동 속도
+    private static final int JUMPSPEED = 5; // 점프 속도
+    private static final int SPEED = 5; // 이동 속도
     JProgressBar progressBar = new JProgressBar(0, 100); //진행바
     //private volatile boolean isRight = true; // isRight가 제어 변수라고 가정합니다
     private volatile boolean workerRunning = false; // SwingWorker가 실행 중인지를 추적하는 변수
@@ -269,7 +269,7 @@ public class RunPanel extends JPanel {
                             // 떨어지는 동안 계속 실행
                             if (currentFallHeight < jumpDuration) {
                                 // 캐릭터를 아래로 이동
-                                y += jumpSpeed;
+                                y += jumpSpeed-1;
 
                                 // Check for collision with blocks
                                 for (Block block : blocks) {
@@ -322,6 +322,14 @@ public class RunPanel extends JPanel {
     // 블록을 추가하는 메서드
     private void addBlock(Block block) {
         blocks.add(block);
+        if (blocks.size() <= 5) {
+            block.setHasCoin(true);
+        } else {
+            // Randomly decide whether to place a coin on this block
+            if (Math.random() < 0.2) {
+                block.setHasCoin(true);
+            }
+        }
     }
     
     @Override
@@ -331,11 +339,18 @@ public class RunPanel extends JPanel {
         // 배경 이미지 그리기
         g.drawImage(backgroundImage, 0, 0, this);
         
-     // 블록 그리기
+        // 블록 그리기
         for (Block block : blocks) {
             g.setColor(Color.BLUE); // Set block color (you can customize)
             g.fillRect(block.getX(), block.getY(), block.getWidth(), block.getHeight());
+
+            // Check if the block has a coin and draw the coin image
+            if (block.hasCoin()) {
+                Image coinImage = new ImageIcon("images/Coin.gif").getImage();
+                g.drawImage(coinImage, block.getX()+25, block.getY()-50, 50, 50, this);
+            }
         }
+
 
         // 캐릭터 이미지 그리기
         g.drawImage(player, x, y, this);
