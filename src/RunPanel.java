@@ -111,14 +111,48 @@ public class RunPanel extends JPanel {
         // 블록 추가 예시
         Block block1 = new Block(200, 600, 100, 20);
         addBlock(block1);
-        Block block2 = new Block(300, 500, 100, 20);
+        Block block2 = new Block(400, 650, 100, 20);
         addBlock(block2);
-        Block block3 = new Block(400, 400, 100, 20);
+        Block block3 = new Block(530, 550, 100, 20);
         addBlock(block3);
-        Block block4 = new Block(500, 300, 100, 20);
+        Block block4 = new Block(700, 600, 100, 20);
         addBlock(block4);
-        Block block5 = new Block(600, 200, 100, 20);
+        Block block5 = new Block(850, 500, 100, 20);
         addBlock(block5);
+        Block block6 = new Block(1050, 400, 100, 20);
+        addBlock(block6);
+        
+        Block block7 = new Block(700, 400, 100, 20);
+        addBlock(block7);
+        Block block8 = new Block(500, 350, 100, 20);
+        addBlock(block8);
+        Block block9 = new Block(450, 100, 100, 20);
+        addBlock(block9);
+        
+        Block block10 = new Block(300, 300, 100, 20);
+        addBlock(block10);
+        Block block11 = new Block(100, 250, 100, 20);
+        addBlock(block11);
+        Block block12 = new Block(300, 180, 100, 20);
+        addBlock(block12);
+        
+        Block block13 = new Block(900, 250, 100, 20);
+        addBlock(block13);
+        Block block14 = new Block(700, 150, 100, 20);
+        addBlock(block14);
+        
+        Block block15 = new Block(1000, 100, 100, 20);
+        addBlock(block15);
+        Block block16 = new Block(10, 130, 100, 20);
+        addBlock(block16);
+        Block block17 = new Block(30, 500, 100, 20);
+        addBlock(block17);
+        Block block18 = new Block(200, 400, 100, 20);
+        addBlock(block18);
+       
+        
+        
+        
 
         InputMap inputMap = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
         ActionMap actionMap = getActionMap();
@@ -198,41 +232,65 @@ public class RunPanel extends JPanel {
 
 
     private void moveJump() {
+        // 점프 중임을 표시
         isJump = true;
-        
-        // Change player image
+
+        // 캐릭터 이미지 변경
         player = new ImageIcon(playerU).getImage();
 
-        int jumpHeight = 130;
-        int jumpSpeed = JUMPSPEED;
-        int jumpDuration = jumpHeight / jumpSpeed;
+        // 점프 높이와 속도 설정
+        int jumpHeight = 130;  // 점프 높이
+        int jumpSpeed = JUMPSPEED;  // 점프 속도
+        int jumpDuration = jumpHeight / jumpSpeed;  // 점프 기간 계산
 
+        // 점프를 처리할 타이머 설정
         Timer jumpTimer = new Timer(2, new ActionListener() {
             private int currentJumpHeight = 0;
 
             @Override
             public void actionPerformed(ActionEvent e) {
+                // 점프 기간 동안 계속 실행
                 if (currentJumpHeight < jumpDuration) {
+                    // 캐릭터를 위로 이동
                     y -= jumpSpeed;
                     setPlayerLocation();
                     currentJumpHeight++;
                 } else {
+                    // 점프가 끝나면 실행 중인 타이머 중지
+
                     ((Timer) e.getSource()).stop();
 
+                    // 캐릭터가 점프 후 떨어지는 타이머 설정
                     Timer fallTimer = new Timer(3, new ActionListener() {
                         private int currentFallHeight = 0;
 
                         @Override
                         public void actionPerformed(ActionEvent e) {
+                            // 떨어지는 동안 계속 실행
                             if (currentFallHeight < jumpDuration) {
+                                // 캐릭터를 아래로 이동
                                 y += jumpSpeed;
+
+                                // Check for collision with blocks
+                                for (Block block : blocks) {
+                                    if (isCollision(block)) {
+                                        // Adjust the character's position based on the block's position
+                                        y = block.getY() - player.getHeight(null);
+                                        stopMovement(); // Stop horizontal movement when on a block
+                                        break;
+                                    }
+                                }
+
                                 setPlayerLocation();
                                 currentFallHeight++;
                             } else {
+                                // 떨어짐이 끝나면 실행 중인 타이머 중지
                                 ((Timer) e.getSource()).stop();
+
+                                // 점프 상태 종료
                                 isJump = false;
 
-                                // Change player image to default image in the swing thread
+                                // 캐릭터 이미지를 기본 이미지로 변경 (Swing 스레드에서)
                                 player = new ImageIcon(playerD).getImage();
                                 repaint();
                             }
@@ -243,6 +301,14 @@ public class RunPanel extends JPanel {
             }
         });
         jumpTimer.start();
+    }
+
+    // Check for collision between the character and a block
+    private boolean isCollision(Block block) {
+        return x < block.getX() + block.getWidth() &&
+               x + player.getWidth(null) > block.getX() &&
+               y + player.getHeight(null) > block.getY() &&
+               y < block.getY() + block.getHeight();
     }
 
 
