@@ -15,6 +15,7 @@ public class TestPanel extends JPanel {
     private JPanel cardPanel; // 화면 전환
 
     int y = 300;
+    int count;
     
     public TestPanel(CardLayout cardLayout, JPanel cardPanel) {
         this.cardLayout = cardLayout;
@@ -33,14 +34,14 @@ public class TestPanel extends JPanel {
             	new Thread(new Runnable() {
             		@Override
             		public void run() {
-            			while(y <= 300) {
-            				y -= 5;    				
+            			while(y <= 300 && y >= -1878) {
+            				y -= 2;    				
             				System.out.println(y);
             				try {
-            					if(y / 50 == 0){//omr 종이 이동
+            					if(y == 48 || y == -178 || y == -438 || y == -678 || y == -908 || y == -1158 || y == -1400 || y == -1638 || y == -1878){//omr 종이 이동
             						Thread.sleep(1000);
             					} else {            						
-            						Thread.sleep(10);
+            						Thread.sleep(5);
             					}
             					
             				} catch (InterruptedException e) {
