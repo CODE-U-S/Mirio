@@ -74,6 +74,8 @@ public class BossPanel extends JPanel {
                 if (isSpacePressed && !isJavaMoving) {
                     // If space is pressed and Java image is not moving, start moving Java image
                     isJavaMoving = true;
+                    javaImageX = x; // Set initial position to player's x position
+                    javaImageY = y; // Set initial position to player's y position
                     javaImageTimer.start();
                     isSpacePressed = false;
                 }
@@ -210,6 +212,10 @@ public class BossPanel extends JPanel {
         super.paintComponent(g);
         g.drawImage(backgroundImage, 0, 0, this);
         g.drawImage(player, x, y, this);
-        g.drawImage(javaImage, javaImageX, javaImageY, JAVA_IMAGE_SIZE, JAVA_IMAGE_SIZE, this);
+
+        // Draw Java image only when it is moving (space bar is pressed)
+        if (isJavaMoving) {
+            g.drawImage(javaImage, javaImageX, javaImageY, JAVA_IMAGE_SIZE, JAVA_IMAGE_SIZE, this);
+        }
     }
 }
