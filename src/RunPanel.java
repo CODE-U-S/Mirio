@@ -47,6 +47,8 @@ public class RunPanel extends JPanel {
     
     private int score = 0;
     
+    private Heart heartAt300x600; // 300, 600 위치의 하트를 관리할 객체
+    
     // 캐릭터 이미지 받기
     public void setCharacterImage(String characterSelection) {
         this.playerD = characterSelection+ ".png";
@@ -64,6 +66,9 @@ public class RunPanel extends JPanel {
         
         // 배경 이미지 로드
         backgroundImage = new ImageIcon("images/run.png").getImage();
+        
+        // 특정 위치(300, 600)에 하트 생성
+        heartAt300x600 = new Heart(950, 650);
         
         
         // 투명한 버튼 생성
@@ -102,7 +107,10 @@ public class RunPanel extends JPanel {
                         ex.printStackTrace();
                     }
                 }
-                workerRunning = false; // SwingWorker가 작업을 완료하면 플래그를 재설정합니다
+
+                // 진행바가 완료되면 onProgressBarComplete 호출
+                onProgressBarComplete();
+
                 return null;
             }
         };
@@ -421,10 +429,24 @@ public class RunPanel extends JPanel {
             }
             
         }
+        
+        // 300, 600 위치의 하트 그리기
+        heartAt300x600.draw(g);
 
 
         // 캐릭터 이미지 그리기
         g.drawImage(player, x, y, this);
     }
+    
+    // 진행바 작업 완료 시 호출되는 메서드
+    private void onProgressBarComplete() {
+        heartAt300x600.setCount(); // count 감소
+        if (heartAt300x600.getCount() <= 0) {
+            // 여기에 추가 작업을 수행할 수 있습니다.
+            // 예를 들어, 다음 단계로의 전환 등을 처리할 수 있습니다.
+        }
+        repaint(); // 이 줄을 추가하여 패널을 다시 그립니다
+    }    
+    
 
 }

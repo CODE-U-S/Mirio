@@ -58,6 +58,8 @@ public class StudyPanel extends JPanel implements KeyListener {
     
     public static JLabel text_time;
     private int initalTimer = 60;
+    
+    private Heart heartAt950x10; //하트를 관리할 객체
 
     
     static {//랜덤 난수 생성
@@ -101,6 +103,9 @@ public class StudyPanel extends JPanel implements KeyListener {
          });
 
          setFocusable(true); // 패널이 키 이벤트를 받을 수 있도록 설정
+         
+         // 특정 위치(300, 600)에 하트 생성
+         heartAt950x10 = new Heart(950, 10);
          
     	// 화면 전환
     	setLayout(new BorderLayout());
@@ -222,5 +227,7 @@ public class StudyPanel extends JPanel implements KeyListener {
         if(backgroundtop != null) g.drawImage(backgroundtop,  0,  -30,  1198, 100, this);
         if(backgroundbottom != null) g.drawImage(backgroundbottom, 2, 638, 1198, 100, this);
         if (character_image != null) g.drawImage(character_image, character_x, character_y, this);
+        
+        heartAt950x10.draw(g);
     }
 }
