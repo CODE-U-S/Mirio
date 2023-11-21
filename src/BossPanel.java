@@ -15,19 +15,27 @@ public class BossPanel extends JPanel {
     private Image player; // 캐릭터 이미지를 저장할 Image 변수
     private String playerU; // 이미지 경로 저장할 변수
     private String playerD; // 이미지 경로 저장할 변수
-    private int playerX = 100; // 캐릭터의 x좌표
-    private int playerY = 100; // 캐릭터의 y좌표
     
+    private Image javaImage; // 추가 이미지를 저장할 Image 변수
+    private int javaImageX; // 추가 이미지의 x 좌표
+    private int javaImageY; // 추가 이미지의 y 좌표
+    private static final int JAVA_IMAGE_SIZE = 80;
+    private static final int JAVA_IMAGE_SPEED = 10; // 이동 속도
+
+  
     private boolean isRight; // 오른쪽 방향 키가 눌렸는지 확인
     private boolean isLeft; // 왼쪽 방향 키가 눌렸는지 확인
     private boolean isJump; // 점프 중인지 확인
     private boolean isDown; // 점프 중인지 확인
+    private boolean isSpacePressed; // 스페이스바가 눌렸는지 확인
+    private boolean isJavaMoving; // Java 이미지가 이동 중인지 확인
     private static final int SPEED = 5; // 이동 속도
     
     private int x = 200; // 플레이어의 x 좌표
     private int y = 350; // 플레이어의 y 좌표
     
     private Timer movementTimer; 
+    private Timer javaImageTimer;
 
     public void setCharacterImage(String characterSelection) {
         this.playerD = characterSelection + ".png";
@@ -42,6 +50,7 @@ public class BossPanel extends JPanel {
         try {
             // 이미지 파일을 불러옵니다. 이미지 파일은 images 폴더에 있어야 합니다.
         	backgroundImage = ImageIO.read(new File("images/boss/test.png"));
+        	javaImage = ImageIO.read(new File("images/boss/java.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -61,11 +70,37 @@ public class BossPanel extends JPanel {
                 if (isDown && y < getHeight() - player.getHeight(null)) {
                     y += SPEED;
                 }
+                
+                if (isSpacePressed && !isJavaMoving) {
+                    // If space is pressed and Java image is not moving, start moving Java image
+                    isJavaMoving = true;
+                    javaImageTimer.start();
+                    isSpacePressed = false;
+                }
 
                 setPlayerLocation();
             }
         });
         movementTimer.start();
+        
+        javaImageTimer = new Timer(10, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (isJavaMoving) {
+                    // If Java image is moving, update its position
+                    javaImageX += JAVA_IMAGE_SPEED;
+
+                    // Check if Java image is out of bounds, stop the timer and reset the position
+                    if (javaImageX > getWidth()) {
+                        isJavaMoving = false;
+                        javaImageTimer.stop();
+                        javaImageX = x;
+                        javaImageY = y;
+                    }
+                }
+                setPlayerLocation();
+            }
+        });
         
         InputMap inputMap = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
         ActionMap actionMap = getActionMap();
@@ -149,6 +184,15 @@ public class BossPanel extends JPanel {
                 isDown = false;
             }
         });
+        
+        // 스페이스바 키
+        KeyStroke spaceKeyReleased = KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0, false);
+        inputMap.put(spaceKeyReleased, "SpaceReleased");
+        actionMap.put("SpaceReleased", new AbstractAction() {
+            public void actionPerformed(ActionEvent e) {
+                isSpacePressed = true;
+            }
+        });
 
         
     }
@@ -166,6 +210,6 @@ public class BossPanel extends JPanel {
         super.paintComponent(g);
         g.drawImage(backgroundImage, 0, 0, this);
         g.drawImage(player, x, y, this);
-        
+        g.drawImage(javaImage, javaImageX, javaImageY, JAVA_IMAGE_SIZE, JAVA_IMAGE_SIZE, this);
     }
 }
