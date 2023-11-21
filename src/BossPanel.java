@@ -47,6 +47,8 @@ public class BossPanel extends JPanel {
     
     private Image boss; // 보스
     private int bossHealth; // 보스의 체력
+    
+    private Heart heartAt10x10; //하트를 관리할 객체
 
     public void setCharacterImage(String characterSelection) {
         this.playerD = characterSelection + ".png";
@@ -70,6 +72,7 @@ public class BossPanel extends JPanel {
         
         javaThreads = new ArrayList<>();
         bossHealth = 100; // 초기 체력 설정
+        heartAt10x10 = new Heart(10, 10);
         
         movementTimer = new Timer(10, new ActionListener() {
             @Override
@@ -278,15 +281,30 @@ public class BossPanel extends JPanel {
     }
     
     private void checkCollision() {
-        // 자바 스레드와 보스의 충돌을 확인하고 충돌 시 스레드를 제거하고 보스의 체력을 감소시킵니다.
-        Rectangle bossBounds = new Rectangle(880, 30, 250, 600);
+        // Check collision between player and arrows
+        Rectangle playerBounds = new Rectangle(x, y, player.getWidth(null), player.getHeight(null));
+
+        for (ArrowThread arrowThread : arrowThreads) {
+            Rectangle arrowBounds = new Rectangle(arrowThread.getArrowX(), arrowThread.getArrowY(), 100, 30);
+
+            if (playerBounds.intersects(arrowBounds)) {
+                // Collision detected between player and arrow
+                arrowThreads.remove(arrowThread);
+                // Perform any additional actions, e.g., decrease player health or update game state
+                // Add your code here
+                return;
+            }
+        }
+
+        // Check collision between Java threads and boss
+        Rectangle bossBounds = new Rectangle(900, 30, 250, 600);
 
         for (JavaThread javaThread : javaThreads) {
             Rectangle javaBounds = new Rectangle(javaThread.getJavaX(), javaThread.getJavaY(), JAVA_IMAGE_SIZE, JAVA_IMAGE_SIZE);
 
             if (javaBounds.intersects(bossBounds)) {
                 javaThreads.remove(javaThread);
-                bossHealth -= 1; // 보스의 체력 감소
+                bossHealth -= 1;
                 return;
             }
         }
@@ -365,16 +383,6 @@ public class BossPanel extends JPanel {
         g.drawImage(player, x, y, this);
         g.drawImage(boss, 900, 30, 250, 600, this);
         
-        int arrowSize = 50;
-        int arrowSpacing = 10; // Adjust the spacing between the arrows
-        int arrowX = 10;
-        int arrowY = 10;
-
-        for (int i = 0; i < 5; i++) {
-            Image arrowImage = new ImageIcon("images/boss/arrow02.png").getImage();
-            g.drawImage(arrowImage, arrowX, arrowY, arrowSize, arrowSize, this);
-            arrowX += arrowSize + arrowSpacing;
-        }
       
         // 히어로 텍스트 그리기
         g.setColor(Color.WHITE);
@@ -398,6 +406,9 @@ public class BossPanel extends JPanel {
             Image arrowImage = new ImageIcon("images/boss/arrow.png").getImage();
             g.drawImage(arrowImage, arrowThread.getArrowX(), arrowThread.getArrowY(), 100, 30, this);
         }
+        
+        heartAt10x10.draw(g);
+
         
     }
 }

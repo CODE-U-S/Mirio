@@ -33,6 +33,8 @@ public class TestPanel extends JPanel {
     boolean count = true;
     private ImageIcon black = new ImageIcon("images/black.png");
     
+    private Heart heartAt950x10; //하트를 관리할 객체
+    
     public TestPanel(CardLayout cardLayout, JPanel cardPanel) {
         this.cardLayout = cardLayout;
         this.cardPanel = cardPanel;
@@ -44,6 +46,8 @@ public class TestPanel extends JPanel {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        heartAt950x10 = new Heart(950, 10);
+        
         // 투명한 버튼 생성
         for(int i = 0; i < 5; i++) {
         	testbutton[i] = new JButton(); // 각 요소에 JButton 생성
@@ -144,5 +148,6 @@ public class TestPanel extends JPanel {
             g.drawImage(backgroundTop, 0, 0, 1200, 300, null);
             g.drawImage(backgroundBottom, 0, 500, 1200, 300, null);
         }
+        heartAt950x10.draw(g);
     }
 }
