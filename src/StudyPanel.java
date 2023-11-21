@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
@@ -59,7 +60,7 @@ public class StudyPanel extends JPanel implements KeyListener {
     private int y = -10;
     
     public static JLabel text_time;
-    private int initalTimer = 60;
+    private int initalTimer = 15;
     
     private Heart heartAt950x10; //하트를 관리할 객체
 
@@ -152,12 +153,12 @@ public class StudyPanel extends JPanel implements KeyListener {
         int keyCode = e.getKeyCode();
         // 왼쪽 화살표 키를 눌렀을 때 이미지의 x 좌표를 감소시켜 왼쪽으로 이동
         if (keyCode == KeyEvent.VK_LEFT) {
-        	character_x -= 10;
+        	character_x -= 30;
         	
         }
         // 오른쪽 화살표 키를 눌렀을 때 이미지의 x 좌표를 증가시켜 오른쪽으로 이동
         else if (keyCode == KeyEvent.VK_RIGHT) {
-        	character_x += 10;
+        	character_x += 30;
         }
         if(cnt) {
         	new Thread(new Runnable() {
@@ -224,9 +225,30 @@ public class StudyPanel extends JPanel implements KeyListener {
         // 사용하지 않음 무조건 넣어줘야 오류가 안 남.
     }
     
+    private void checkCollisions() {
+        // Rectangle representing the player's bounds
+        Rectangle playerBounds = new Rectangle(character_x, character_y, player.getWidth(this), player.getHeight(this));
+
+        // Iterate through each item and check for collision
+        for (int i = 0; i < 9; i++) {
+            if (item[i] != null) {
+                Rectangle itemBounds = new Rectangle(randoms[i], y, item[i].getWidth(this), item[i].getHeight(this));
+
+                // Check if the player and item rectangles intersect
+                if (playerBounds.intersects(itemBounds)) {
+                    // Collision detected! Perform actions like removing the item and updating score
+                    item[i] = null; // Remove the item from the array
+                    heartAt950x10.setCount(); // Update the count in your Heart class or perform other actions
+                }
+            }
+        }
+    }
+    
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        
+        checkCollisions();
         
         if (image != null) g.drawImage(image, 0, 0, 1200, 700, this);// 이미지를 패널에 그림.
         for(int i = 0; i < 9; i++) {
@@ -239,5 +261,6 @@ public class StudyPanel extends JPanel implements KeyListener {
         if (player != null) g.drawImage(player, character_x, character_y, this);
         
         heartAt950x10.draw(g);
+        
     }
 }
