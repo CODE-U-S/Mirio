@@ -4,6 +4,7 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import javax.imageio.ImageIO;
 
 public class BossPanel extends JPanel {
@@ -21,6 +22,8 @@ public class BossPanel extends JPanel {
     private int javaImageY; // 추가 이미지의 y 좌표
     private static final int JAVA_IMAGE_SIZE = 80;
     private static final int JAVA_IMAGE_SPEED = 10; // 이동 속도
+    
+    private ArrayList<JavaThread> javaThreads; // Java 스레드를 저장할 리스트
 
   
     private boolean isRight; // 오른쪽 방향 키가 눌렸는지 확인
@@ -54,6 +57,8 @@ public class BossPanel extends JPanel {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        
+        javaThreads = new ArrayList<>();
         
         movementTimer = new Timer(10, new ActionListener() {
             @Override
@@ -192,7 +197,7 @@ public class BossPanel extends JPanel {
         inputMap.put(spaceKeyReleased, "SpaceReleased");
         actionMap.put("SpaceReleased", new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
-                isSpacePressed = true;
+                createJavaThread();
             }
         });
 
@@ -206,6 +211,51 @@ public class BossPanel extends JPanel {
             repaint();
         });
     }
+    
+    private void createJavaThread() {
+        JavaThread javaThread = new JavaThread(x, y);
+        javaThreads.add(javaThread);
+        javaThread.start();
+    }
+    
+    private class JavaThread extends Thread {
+        private int javaX;
+        private int javaY;
+
+        public JavaThread(int startX, int startY) {
+            this.javaX = startX;
+            this.javaY = startY;
+        }
+
+        @Override
+        public void run() {
+            while (javaX < getWidth()) {
+                javaX += JAVA_IMAGE_SPEED;
+
+                // Java 이미지가 화면을 벗어나면 스레드를 제거합니다.
+                if (javaX > getWidth()) {
+                    javaThreads.remove(this);
+                    return;
+                }
+
+                setPlayerLocation();
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        public int getJavaX() {
+            return javaX;
+        }
+
+        public int getJavaY() {
+            return javaY;
+        }
+    }
+
    
     @Override
     protected void paintComponent(Graphics g) {
@@ -213,9 +263,9 @@ public class BossPanel extends JPanel {
         g.drawImage(backgroundImage, 0, 0, this);
         g.drawImage(player, x, y, this);
 
-        // Draw Java image only when it is moving (space bar is pressed)
-        if (isJavaMoving) {
-            g.drawImage(javaImage, javaImageX, javaImageY, JAVA_IMAGE_SIZE, JAVA_IMAGE_SIZE, this);
+     // 모든 Java 스레드를 그립니다.
+        for (JavaThread javaThread : javaThreads) {
+            g.drawImage(javaImage, javaThread.getJavaX(), javaThread.getJavaY(), JAVA_IMAGE_SIZE, JAVA_IMAGE_SIZE, this);
         }
     }
 }
