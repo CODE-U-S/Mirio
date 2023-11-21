@@ -70,7 +70,6 @@ public class RunPanel extends JPanel {
         // 특정 위치(300, 600)에 하트 생성
         heartAt300x600 = new Heart(950, 650);
         
-        
         // 투명한 버튼 생성
         JButton runbtn = new JButton();
         runbtn.setContentAreaFilled(false); // 버튼의 내용 영역을 투명하게 만듭니다
