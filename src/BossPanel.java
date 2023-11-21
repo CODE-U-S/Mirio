@@ -1,9 +1,12 @@
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
+
 import javax.imageio.ImageIO;
 
 public class BossPanel extends JPanel {
@@ -23,6 +26,9 @@ public class BossPanel extends JPanel {
     private static final int JAVA_IMAGE_SPEED = 15; // 이동 속도
     
     private ArrayList<JavaThread> javaThreads; // Java 스레드를 저장할 리스트
+    
+    private Timer arrowTimer;
+    private ArrayList<ArrowThread> arrowThreads;
 
   
     private boolean isRight; // 오른쪽 방향 키가 눌렸는지 확인
@@ -113,6 +119,16 @@ public class BossPanel extends JPanel {
                 setPlayerLocation();
             }
         });
+        
+        arrowThreads = new ArrayList<>();
+        arrowTimer = new Timer(6000, new ActionListener() { // Timer set for every 6 seconds (6000 milliseconds)
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                shootArrows();
+            }
+        });
+        arrowTimer.start();
+        
         
         InputMap inputMap = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
         ActionMap actionMap = getActionMap();
@@ -282,6 +298,63 @@ public class BossPanel extends JPanel {
             // 게임 오버 또는 다른 처리
         }
     }
+    
+    private void shootArrows() {
+        Random random = new Random();
+        int bossX = 900; // Boss x-coordinate
+        int bossY = 30;  // Boss y-coordinate
+        int arrowSize = 100;
+        int arrowSpeed = 5;
+
+        for (int i = 0; i < 10; i++) {
+            int arrowX = bossX;
+            int arrowY = bossY + random.nextInt(100); // Randomize the vertical position within a range
+
+            ArrowThread arrowThread = new ArrowThread(arrowX, arrowY, arrowSpeed);
+            arrowThreads.add(arrowThread);
+            arrowThread.start();
+        }
+    }
+    
+    private class ArrowThread extends Thread {
+        private int arrowX;
+        private int arrowY;
+        private int arrowSpeed;
+
+        public ArrowThread(int startX, int startY, int speed) {
+            this.arrowX = startX;
+            this.arrowY = startY;
+            this.arrowSpeed = speed;
+        }
+
+        @Override
+        public void run() {
+            while (arrowX > 0) {
+                arrowX -= arrowSpeed;
+
+                // Arrow image is out of bounds, remove the thread
+                if (arrowX < 0) {
+                    arrowThreads.remove(this);
+                    return;
+                }
+
+                setPlayerLocation();
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        public int getArrowX() {
+            return arrowX;
+        }
+
+        public int getArrowY() {
+            return arrowY;
+        }
+    }
 
 
    
@@ -291,6 +364,17 @@ public class BossPanel extends JPanel {
         g.drawImage(backgroundImage, 0, 0, this);
         g.drawImage(player, x, y, this);
         g.drawImage(boss, 900, 30, 250, 600, this);
+        
+        int arrowSize = 50;
+        int arrowSpacing = 10; // Adjust the spacing between the arrows
+        int arrowX = 10;
+        int arrowY = 10;
+
+        for (int i = 0; i < 5; i++) {
+            Image arrowImage = new ImageIcon("images/boss/arrow02.png").getImage();
+            g.drawImage(arrowImage, arrowX, arrowY, arrowSize, arrowSize, this);
+            arrowX += arrowSize + arrowSpacing;
+        }
       
         // 히어로 텍스트 그리기
         g.setColor(Color.WHITE);
@@ -309,5 +393,11 @@ public class BossPanel extends JPanel {
         for (JavaThread javaThread : javaThreads) {
             g.drawImage(javaImage, javaThread.getJavaX(), javaThread.getJavaY(), JAVA_IMAGE_SIZE, JAVA_IMAGE_SIZE, this);
         }
+        // 화살
+        for (ArrowThread arrowThread : arrowThreads) {
+            Image arrowImage = new ImageIcon("images/boss/arrow.png").getImage();
+            g.drawImage(arrowImage, arrowThread.getArrowX(), arrowThread.getArrowY(), 100, 30, this);
+        }
+        
     }
 }
