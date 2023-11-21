@@ -21,7 +21,7 @@ public class BossPanel extends JPanel {
     private int javaImageX; // 추가 이미지의 x 좌표
     private int javaImageY; // 추가 이미지의 y 좌표
     private static final int JAVA_IMAGE_SIZE = 80;
-    private static final int JAVA_IMAGE_SPEED = 10; // 이동 속도
+    private static final int JAVA_IMAGE_SPEED = 15; // 이동 속도
     
     private ArrayList<JavaThread> javaThreads; // Java 스레드를 저장할 리스트
 
@@ -32,13 +32,15 @@ public class BossPanel extends JPanel {
     private boolean isDown; // 점프 중인지 확인
     private boolean isSpacePressed; // 스페이스바가 눌렸는지 확인
     private boolean isJavaMoving; // Java 이미지가 이동 중인지 확인
-    private static final int SPEED = 5; // 이동 속도
+    private static final int SPEED = 10; // 이동 속도
     
     private int x = 200; // 플레이어의 x 좌표
     private int y = 350; // 플레이어의 y 좌표
     
     private Timer movementTimer; 
     private Timer javaImageTimer;
+    
+    private Image interviewerImage; // 보스
 
     public void setCharacterImage(String characterSelection) {
         this.playerD = characterSelection + ".png";
@@ -54,6 +56,8 @@ public class BossPanel extends JPanel {
             // 이미지 파일을 불러옵니다. 이미지 파일은 images 폴더에 있어야 합니다.
         	backgroundImage = ImageIO.read(new File("images/boss/test.png"));
         	javaImage = ImageIO.read(new File("images/boss/java.png"));
+        	interviewerImage = ImageIO.read(new File("images/boss/Interviewer01.png"));
+        	
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -262,6 +266,7 @@ public class BossPanel extends JPanel {
         super.paintComponent(g);
         g.drawImage(backgroundImage, 0, 0, this);
         g.drawImage(player, x, y, this);
+        g.drawImage(interviewerImage, 880, 30, 250, 600, this);
 
      // 모든 Java 스레드를 그립니다.
         for (JavaThread javaThread : javaThreads) {
