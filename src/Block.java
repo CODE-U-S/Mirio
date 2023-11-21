@@ -5,6 +5,7 @@ public class Block {
     private int height;
 
     private boolean hasCoin;
+    private boolean hasArrival;
     
     public Block(int x, int y, int width, int height) {
         this.x = x;
@@ -13,6 +14,7 @@ public class Block {
         this.height = height;
         
         hasCoin = false;
+        this.hasArrival = false;
     }
 
     public int getX() {
@@ -38,4 +40,16 @@ public class Block {
     public void setHasCoin(boolean hasCoin) {
         this.hasCoin = hasCoin;
     }
+    // Add a method to set the hasArrival property
+    public void setHasArrival(boolean hasArrival) {
+        this.hasArrival = hasArrival;
+    }
+
+    // Add a method to check if the block has the arrival image
+    public boolean hasArrival() {
+        return hasArrival;
+    }
+
+    
+    
 }

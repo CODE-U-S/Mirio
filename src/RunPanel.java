@@ -64,22 +64,6 @@ public class RunPanel extends JPanel {
         // 배경 이미지 로드
         backgroundImage = new ImageIcon("images/run.png").getImage();
         
-        
-        // 투명한 버튼 생성
-        JButton runbtn = new JButton();
-        runbtn.setContentAreaFilled(false); // 버튼의 내용 영역을 투명하게 만듭니다
-        runbtn.setOpaque(false); // 버튼을 투명하게 만듭니다.
-        runbtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-            	// 화면 전환: StartPanel에서 CharacterPanel로 전환
-            	cardLayout.show(cardPanel, "StudyPanel");
-            }
-        });
-        setLayout(null); // 레이아웃 관리자를 사용하지 않고 직접 위치 설정
-        runbtn.setBounds(700, 100, 425, 425); // 버튼의 위치와 크기를 설정
-        add(runbtn); // 패널에 버튼을 추가
-        
         // 진행바
        
         progressBar.setBounds(20, 20, 1145, 25);
@@ -163,7 +147,9 @@ public class RunPanel extends JPanel {
         addBlock(block18);
        
         
-        
+        // Randomly select a block to have the "arrival.png" image
+        int randomIndex = (int) (Math.random() * blocks.size());
+        blocks.get(randomIndex).setHasArrival(true);
         
 
         InputMap inputMap = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
@@ -348,6 +334,10 @@ public class RunPanel extends JPanel {
             if (Math.random() < 0.2) {
                 block.setHasCoin(true);
             }
+            // Randomly decide whether to place the "arrival.png" on this block
+            if (Math.random() < 0.1) {
+                block.setHasArrival(true);
+            }
         }
     }
     
@@ -368,6 +358,26 @@ public class RunPanel extends JPanel {
         // scoreLabel.setText("Score: " + score);
     }
     
+    private void checkCollisionWithArrival() {
+        for (Block block : blocks) {
+            if (block.hasArrival() && isCollision(block)) {
+                // Introduce a delay using a Timer
+                Timer delayTimer = new Timer(1000, new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        // Trigger screen transition to StudyPanel
+                        cardLayout.show(cardPanel, "StudyPanel");
+                        // Additional logic can be added as needed
+                        ((Timer) e.getSource()).stop(); // Stop the timer after triggering the transition
+                    }
+                });
+
+                delayTimer.setRepeats(false); // Make the timer run only once
+                delayTimer.start();
+            }
+        }
+    }
+    
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -385,6 +395,14 @@ public class RunPanel extends JPanel {
                 Image coinImage = new ImageIcon("images/Coin.gif").getImage();
                 g.drawImage(coinImage, block.getX()+25, block.getY()-50, 50, 50, this);
             }
+            
+            // Check if the block should have the "arrival.png" image
+            checkCollisionWithArrival();
+            if (block.hasArrival()) {
+                Image arrivalImage = new ImageIcon("images/arrival.png").getImage();
+                g.drawImage(arrivalImage, block.getX()+25, block.getY() - 60, 50, 50, this);
+            }
+            
         }
 
 
