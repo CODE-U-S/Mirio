@@ -29,13 +29,13 @@ public class TestPanel extends JPanel {
     private int x[] = new int[5];
     private int x_index;
     int y = 330;
-    boolean button_click = false;
+    boolean button_click = true;
     boolean count = true;
+    private ImageIcon black = new ImageIcon("images/black.png");
     
     public TestPanel(CardLayout cardLayout, JPanel cardPanel) {
         this.cardLayout = cardLayout;
         this.cardPanel = cardPanel;
-        ImageIcon black = new ImageIcon("images/black.png");
         try {
         	//이미지
             backgroundTop = ImageIO.read(new File("images/testpanel_backgroundTop.png"));
@@ -70,21 +70,22 @@ public class TestPanel extends JPanel {
 	            			if (count) {
 	            				count = false;	//한번만 실행
 		            			while(omr_y <= 300 && omr_y >= -1878) {
-		            				omr_y -= 2;
-		            				if(y != 150) {
-		            					y -= 2;
-		            					testbutton[buttonIndex].setBounds(x_index, y, 90, 150);
-		            				} else {
-		            					testbutton[buttonIndex].setOpaque(false);
-		            					y = 330;
-		            				}
 		            				try {//omr 종이 이동 멈추는 지점
+										if(button_click) {
+											Thread.sleep(500);
+											removeButton(); // 모든 버튼을 제거하는 메서드 호출
+											button_click = false;
+										}
 		            					if(omr_y == 48 || omr_y == -178 || omr_y == -438 || omr_y == -678 || omr_y == -908 || omr_y == -1158 || omr_y == -1400 || omr_y == -1638 || omr_y == -1878){
+		            						if(!button_click) {
+		            							button_click = true;
+		            							createButton();
+		            						}
 		            						Thread.sleep(1000);
 		            					} else {            						
 		            						Thread.sleep(5);
 		            					}
-		            					
+		            					omr_y -= 2;		            					
 		            				} catch (InterruptedException e) {
 		            					e.printStackTrace();
 		            				}
@@ -95,7 +96,7 @@ public class TestPanel extends JPanel {
 	            	}).start();
 	            }
 	        });
-	        testbutton[i].setBounds(x[i], 330, 90, 150); // 버튼의 위치와 크기를 설정 //150
+	        testbutton[i].setBounds(x[i], 330, 90, 150); // 버튼의 위치와 크기를 설정
 	        setLayout(null); // 레이아웃 관리자를 사용하지 않고 직접 위치 설정
 	        add(testbutton[i]); // 패널에 버튼을 추가
         }
@@ -110,11 +111,29 @@ public class TestPanel extends JPanel {
                 cardLayout.show(cardPanel, "BossPanel");
             }
         });
-
-       
-    	
     }
-
+    private void removeButton() {
+    	for (JButton button : testbutton) {
+            remove(button); // 각 버튼을 패널에서 제거
+        }
+        revalidate();      // 레이아웃을 다시 계산
+        repaint();         // 화면을 다시 그림
+    }
+    private void createButton() {// 화면을 다시 그림
+    	for(int i = 0; i < 5; i++) {
+			testbutton[i] = new JButton(); // 각 요소에 JButton 생성
+			testbutton[i].setContentAreaFilled(false); // 버튼의 내용 영역을 투명하게 만듭니다
+			testbutton[i].setOpaque(false); // 버튼을 투명하게 만듭니다.
+			testbutton[i].setBorderPainted(false); // 버튼 테두리 설정해제
+			testbutton[i].setBounds(x[i], 325, 90, 140); // 버튼의 위치와 크기를 설정
+			add(testbutton[i]); // 패널에 버튼을 추가
+			int buttonIndex = i;
+			testbutton[i].addActionListener(e -> {
+				testbutton[buttonIndex].setIcon(black); // 버튼 이미지 변환
+				testbutton[buttonIndex].setOpaque(false); // 버튼을 투명하게 만듭니다.
+	        });
+		}
+    }
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
