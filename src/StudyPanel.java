@@ -3,6 +3,7 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
@@ -12,6 +13,7 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -86,8 +88,16 @@ public class StudyPanel extends JPanel implements KeyListener {
 
         // 중복되지 않은 9개의 랜덤한 숫자가 배열에 저장됨
     }
-
+    private Image player; // 캐릭터 이미지를 저장할 Image 변수
+    private String playerU; // 이미지 경로 저장할 변수
+    private String playerD; // 이미지 경로 저장할 변수
     
+    public void setCharacterImage(String characterSelection) {
+        this.playerD = characterSelection + ".png";
+        playerU = characterSelection + "_up.png";
+        player = new ImageIcon(playerD).getImage();
+    }
+
     // 이미지 파일 로드
     public StudyPanel(CardLayout cardLayout, JPanel cardPanel) {
     	 this.cardLayout = cardLayout;
@@ -112,7 +122,7 @@ public class StudyPanel extends JPanel implements KeyListener {
         try {
             // 이미지 파일을 로드합니다. 이미지 파일은 images 폴더에 있어야 함.
             image = ImageIO.read(new File("images/MirioClassLearnBackground.png"));
-            character_image = ImageIO.read(new File("images/character02.png"));
+           
             backgroundtop = ImageIO.read(new File("images/Mirio_backgroundtop.png"));
             backgroundbottom = ImageIO.read(new File("images/Mirio_backgroundBottom.png"));
             item = new BufferedImage[] {
@@ -226,7 +236,7 @@ public class StudyPanel extends JPanel implements KeyListener {
         }
         if(backgroundtop != null) g.drawImage(backgroundtop,  0,  -30,  1198, 100, this);
         if(backgroundbottom != null) g.drawImage(backgroundbottom, 2, 638, 1198, 100, this);
-        if (character_image != null) g.drawImage(character_image, character_x, character_y, this);
+        if (player != null) g.drawImage(player, character_x, character_y, this);
         
         heartAt950x10.draw(g);
     }
