@@ -1,13 +1,23 @@
+import java.io.File;
+import java.io.IOException;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 
 import javax.swing.border.Border;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class RunPanel extends JPanel {
 	private CardLayout cardLayout; //화면 전환
@@ -34,6 +44,8 @@ public class RunPanel extends JPanel {
     private Timer movementTimer; 
     
     private List<Block> blocks = new ArrayList<>(); // 블록
+    
+    private int score = 0;
     
     public void setCharacterImage(String characterSelection) {
         this.playerD = characterSelection+ ".png";
@@ -274,6 +286,13 @@ public class RunPanel extends JPanel {
                                 // Check for collision with blocks
                                 for (Block block : blocks) {
                                     if (isCollision(block)) {
+                                        if (block.hasCoin()) {
+                                            // Collision with a coin
+                                            playCoinSound(); // Play the coin sound
+                                            block.setHasCoin(false); // Remove the coin
+                                            score++; // Update the score
+                                            updateScoreLabel(); // Update the score display
+                                        }
                                         // Adjust the character's position based on the block's position
                                         y = block.getY() - player.getHeight(null);
                                         stopMovement(); // Stop horizontal movement when on a block
@@ -330,6 +349,23 @@ public class RunPanel extends JPanel {
                 block.setHasCoin(true);
             }
         }
+    }
+    
+    private void playCoinSound() {
+        try {
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("audio/Coin_sound.wav"));
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            clip.start();
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    private void updateScoreLabel() {
+        // You can use this method to update a JLabel or any other component displaying the score.
+        // For example, if you have a JLabel named scoreLabel:
+        // scoreLabel.setText("Score: " + score);
     }
     
     @Override
