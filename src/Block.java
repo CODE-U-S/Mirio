@@ -4,11 +4,15 @@ public class Block {
     private int width;
     private int height;
 
+    private boolean hasCoin;
+    
     public Block(int x, int y, int width, int height) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
+        
+        hasCoin = false;
     }
 
     public int getX() {
@@ -25,5 +29,13 @@ public class Block {
 
     public int getHeight() {
         return height;
+    }
+    
+    public boolean hasCoin() {
+        return hasCoin;
+    }
+
+    public void setHasCoin(boolean hasCoin) {
+        this.hasCoin = hasCoin;
     }
 }
