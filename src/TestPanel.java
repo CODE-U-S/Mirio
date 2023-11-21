@@ -53,7 +53,19 @@ public class TestPanel extends JPanel {
             	}).start();
         	}
         });
-    
+        
+        
+        // Enter키 눌러서 보스패널로 이동하기
+        getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "enterAction");
+        getActionMap().put("enterAction", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Move to BossPanel when Enter key is pressed
+                cardLayout.show(cardPanel, "BossPanel");
+            }
+        });
+
+       
     	
     }
 

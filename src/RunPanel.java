@@ -64,6 +64,22 @@ public class RunPanel extends JPanel {
         // 배경 이미지 로드
         backgroundImage = new ImageIcon("images/run.png").getImage();
         
+        
+        // 투명한 버튼 생성
+        JButton runbtn = new JButton();
+        runbtn.setContentAreaFilled(false); // 버튼의 내용 영역을 투명하게 만듭니다
+        runbtn.setOpaque(false); // 버튼을 투명하게 만듭니다.
+        runbtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	// 화면 전환: StartPanel에서 CharacterPanel로 전환
+            	cardLayout.show(cardPanel, "StudyPanel");
+            }
+        });
+        setLayout(null); // 레이아웃 관리자를 사용하지 않고 직접 위치 설정
+        runbtn.setBounds(700, 100, 425, 425); // 버튼의 위치와 크기를 설정
+        add(runbtn); // 패널에 버튼을 추가
+        
         // 진행바
        
         progressBar.setBounds(20, 20, 1145, 25);
