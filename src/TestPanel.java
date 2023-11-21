@@ -32,7 +32,7 @@ public class TestPanel extends JPanel {
     boolean pencnt = true;
     boolean button_click = true;
     boolean count = true;
-    boolean  soundCnt = false;
+    boolean  soundCnt = true;
     private ImageIcon black = new ImageIcon("images/black.png");
     
     private Heart heartAt950x10; //하트를 관리할 객체
@@ -119,6 +119,7 @@ public class TestPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Move to BossPanel when Enter key is pressed
+            	
                 cardLayout.show(cardPanel, "BossPanel");
             }
         });
@@ -158,11 +159,13 @@ public class TestPanel extends JPanel {
     	musicPlayer.playMusic("audio/pencil.wav");
     	
     }
+    public void soundStop() {
+    	
+    }
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         if(omr != null)
-        	pencnt = false;
         	sound1();
         	g.drawImage(omr, 0, omr_y, 1200, 2400, null);
         if (backgroundTop != null) {

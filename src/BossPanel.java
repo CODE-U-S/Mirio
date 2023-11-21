@@ -49,7 +49,7 @@ public class BossPanel extends JPanel {
     private int bossHealth; // 보스의 체력
     
     private Heart heartAt10x10; //하트를 관리할 객체
-
+    private boolean soundCnt = true;
     public void setCharacterImage(String characterSelection) {
         this.playerD = characterSelection + ".png";
         playerU = characterSelection + "_up.png";
@@ -253,6 +253,10 @@ public class BossPanel extends JPanel {
 
         @Override
         public void run() {
+        	if(soundCnt) {
+        		Sound();
+        		soundCnt = false;
+        	}
             while (javaX < getWidth()) {
                 javaX += JAVA_IMAGE_SPEED;
 
@@ -278,6 +282,7 @@ public class BossPanel extends JPanel {
         public int getJavaY() {
             return javaY;
         }
+        
     }
     
     private void checkCollision() {
@@ -376,6 +381,10 @@ public class BossPanel extends JPanel {
         }
     }
 
+    public void Sound() {
+    	MusicPlayer musicPlayer = new MusicPlayer();
+    	musicPlayer.playMusic("audio/boss.wav");
+    }
 
    
     @Override
