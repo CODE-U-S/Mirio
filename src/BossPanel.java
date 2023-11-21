@@ -130,7 +130,6 @@ public class BossPanel extends JPanel {
                 shootArrows();
             }
         });
-        arrowTimer.start();
         
         
         InputMap inputMap = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
@@ -222,6 +221,7 @@ public class BossPanel extends JPanel {
         actionMap.put("SpaceReleased", new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
                 createJavaThread();
+                arrowTimer.start();
             }
         });
 
@@ -290,6 +290,8 @@ public class BossPanel extends JPanel {
             if (playerBounds.intersects(arrowBounds)) {
                 // Collision detected between player and arrow
                 arrowThreads.remove(arrowThread);
+                heartAt10x10.setCount(); // Decrease heart count
+                repaint(); // Repaint the panel
                 // Perform any additional actions, e.g., decrease player health or update game state
                 // Add your code here
                 return;
