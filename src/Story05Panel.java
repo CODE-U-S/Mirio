@@ -6,7 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
-public class Story03Panel extends JPanel {
+public class Story05Panel extends JPanel {
 	private BufferedImage[] images; // 이미지 배열
 	private int currentImageIndex = 0; // 현재 이미지 인덱스
     private CardLayout cardLayout; // 화면 전환
@@ -15,21 +15,8 @@ public class Story03Panel extends JPanel {
     private Image image; // 캐릭터 이미지를 저장할 Image 변수
     private String playerD;
     
-    public void setCharacterImage(String characterSelection) {
-        this.playerD = characterSelection + "02.png";
-        try {
-        	images = new BufferedImage[3];
-        	images[0] = ImageIO.read(new File("images/007.png"));
-        	images[1] = ImageIO.read(new File(playerD));
-            images[2] = ImageIO.read(new File("images/010.png"));
-            //image = ImageIO.read(new File("images/story/sunhee01.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    public Story03Panel(CardLayout cardLayout, JPanel cardPanel) {
+   
+    public Story05Panel(CardLayout cardLayout, JPanel cardPanel) {
         this.cardLayout = cardLayout;
         this.cardPanel = cardPanel;
 
