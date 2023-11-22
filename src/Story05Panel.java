@@ -7,15 +7,14 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public class Story05Panel extends JPanel {
-	private BufferedImage[] images; // 이미지 배열
-	private int currentImageIndex = 0; // 현재 이미지 인덱스
+    private BufferedImage[] images; // 이미지 배열
+    private int currentImageIndex = 0; // 현재 이미지 인덱스
     private CardLayout cardLayout; // 화면 전환
     private JPanel cardPanel; // 화면 전환
-    
+
     private Image image; // 캐릭터 이미지를 저장할 Image 변수
     private String playerD;
-    
-   
+
     public Story05Panel(CardLayout cardLayout, JPanel cardPanel) {
         this.cardLayout = cardLayout;
         this.cardPanel = cardPanel;
@@ -29,15 +28,34 @@ public class Story05Panel extends JPanel {
                     currentImageIndex++;
                 } else {
                     // 이미지가 마지막이면 다음 화면으로 전환
-                    cardLayout.show(cardPanel, "StudyPanel");
+                    cardLayout.show(cardPanel, "StartPanel");
                 }
                 repaint(); // 이미지 변경 후 패널을 다시 그리도록 요청
             }
         });
 
         setFocusable(true); // 패널이 키 이벤트를 받을 수 있도록 설정
+
+        // Load images based on the count value
+        int count = Heart.getCount();
+        if (count >= 1) {
+            images = new BufferedImage[1];
+            images[0] = loadImage("images/story/015.png");
+        } else {
+            images = new BufferedImage[2];
+            images[0] = loadImage("images/story/013.png");
+            images[1] = loadImage("imgaes/story/014.png");
+        }
     }
-    
+
+    private BufferedImage loadImage(String fileName) {
+        try {
+            return ImageIO.read(new File(fileName));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     @Override
     protected void paintComponent(Graphics g) {

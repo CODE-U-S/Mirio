@@ -32,7 +32,7 @@ public class TestPanel extends JPanel {
     boolean pencnt = true;
     boolean button_click = true;
     boolean count = true;
-    boolean  soundCnt = true;
+    boolean  soundCnt = false;
     private ImageIcon black = new ImageIcon("images/black.png");
     
     private Heart heartAt950x10; //하트를 관리할 객체
@@ -70,7 +70,6 @@ public class TestPanel extends JPanel {
 	            	x_index = x[buttonIndex];
 	            	testbutton[buttonIndex].setIcon(black); // 버튼 이미지 변환
 	            	testbutton[buttonIndex].setOpaque(true);
-	            	sound2();
 	            	new Thread(new Runnable() {
 	            		@Override
 	            		public void run() {
@@ -79,13 +78,14 @@ public class TestPanel extends JPanel {
 		            			while(omr_y <= 300 && omr_y >= -1878) {
 		            				try {//omr 종이 이동 멈추는 지점
 										if(button_click) {
+											pencnt = true;
+											sound();
 											Thread.sleep(500);
 											removeButton(); // 모든 버튼을 제거하는 메서드 호출
 											button_click = false;
 										}
 		            					if(omr_y == 48 || omr_y == -178 || omr_y == -438 || omr_y == -678 || omr_y == -908 || omr_y == -1158 || omr_y == -1400 || omr_y == -1638 || omr_y == -1878){
 		            						if(!button_click) {
-		            							
 		            							button_click = true;
 		            							createButton();
 		            						}
@@ -102,7 +102,6 @@ public class TestPanel extends JPanel {
 		            			ResultPanel resultPanel = new ResultPanel(cardLayout, cardPanel);
 		                        resultPanel.setBounds(350, 100, 500, 500); // Adjust the position and size
 		                        add(resultPanel, 0); // Add the ResultPanel on top of TestPanel
-		                        soundStop();
 		                        revalidate();
 		                        repaint();
 	            			}
@@ -120,7 +119,6 @@ public class TestPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Move to BossPanel when Enter key is pressed
-            	soundStop();
                 cardLayout.show(cardPanel, "BossPanel");
             }
         });
@@ -144,30 +142,28 @@ public class TestPanel extends JPanel {
 			testbutton[i].addActionListener(e -> {
 				testbutton[buttonIndex].setIcon(black); // 버튼 이미지 변환
 				testbutton[buttonIndex].setOpaque(false); // 버튼을 투명하게 만듭니다.
-				sound2();
 	        });
 		}
     }
-    MusicPlayer music = new MusicPlayer();
-    public void sound1() {
+    public void sound() {
     	if(soundCnt) {
+    		MusicPlayer music = new MusicPlayer();
     		music.playMusic("audio/test.wav"); 
     		soundCnt = false;
     	}
+    	if(pencnt) {
+    		MusicPlayer musicPlayer = new MusicPlayer();
+    		musicPlayer.playMusic("audio/pencil.wav");    	
+    		pencnt = false;
+    	}
     }
-    public void sound2() {
-    	MusicPlayer musicPlayer = new MusicPlayer();
-    	musicPlayer.playMusic("audio/pencil.wav");
-    	
-    }
-    public void soundStop() {
-    	music.stopMusic();
-    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         if(omr != null)
-        	sound1();
+        	pencnt = false;
+        	sound();
         	g.drawImage(omr, 0, omr_y, 1200, 2400, null);
         if (backgroundTop != null) {
             // 이미지를 패널에 그립니다.
