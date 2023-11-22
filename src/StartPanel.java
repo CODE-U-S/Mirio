@@ -34,7 +34,7 @@ public class StartPanel extends JPanel{
             @Override
             public void actionPerformed(ActionEvent e) {
                 // 화면 전환: StartPanel에서 CharacterPanel로 전환
-                cardLayout.show(cardPanel, "CharacterPanel");
+                cardLayout.show(cardPanel, "Story01Panel");
             }
         });
 

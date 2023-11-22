@@ -19,14 +19,22 @@ public class Main implements Runnable {
         JPanel cardPanel = new JPanel(cardLayout);
 
         // 각 패널을 생성
+        Story01Panel story01Panel = new Story01Panel(cardLayout, cardPanel);
+        Story02Panel story02Panel = new Story02Panel(cardLayout, cardPanel);
+        Story03Panel story03Panel = new Story03Panel(cardLayout, cardPanel);
+        Story04Panel story04Panel = new Story04Panel(cardLayout, cardPanel);
+        
         RunPanel runPanel = new RunPanel(cardLayout, cardPanel); // 이 부분은 수정하지 않음
         BossPanel bossPanel = new BossPanel(cardLayout, cardPanel);
         StartPanel startPanel = new StartPanel(cardLayout, cardPanel);
         StudyPanel studypanel = new StudyPanel(cardLayout, cardPanel);
-        CharacterPanel characterPanel = new CharacterPanel(cardLayout, cardPanel, runPanel, bossPanel, studypanel);
+        CharacterPanel characterPanel = new CharacterPanel(cardLayout, cardPanel, runPanel, bossPanel, studypanel,story02Panel,story03Panel);
         ExplanationPanel explanationPanel = new ExplanationPanel(cardLayout, cardPanel);
         TestPanel testPanel = new TestPanel(cardLayout, cardPanel);
         
+        
+        
+      
         
 
         // 패널을 cardPanel에 추가
@@ -37,6 +45,11 @@ public class Main implements Runnable {
         cardPanel.add(studypanel, "StudyPanel");
         cardPanel.add(testPanel, "TestPanel");
         cardPanel.add(bossPanel, "BossPanel");
+        
+        cardPanel.add(story01Panel, "Story01Panel");
+        cardPanel.add(story02Panel, "Story02Panel");
+        cardPanel.add(story03Panel, "Story03Panel");
+        cardPanel.add(story04Panel, "Story04Panel");
 
         cardPanel.setFocusable(true);
         cardPanel.requestFocus();
