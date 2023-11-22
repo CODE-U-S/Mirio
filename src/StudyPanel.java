@@ -153,19 +153,19 @@ public class StudyPanel extends JPanel implements KeyListener {
     public void keyPressed(KeyEvent e) {
         int keyCode = e.getKeyCode();
         // 왼쪽 화살표 키를 눌렀을 때 이미지의 x 좌표를 감소시켜 왼쪽으로 이동
-        if (keyCode == KeyEvent.VK_LEFT) {
+        if (keyCode == KeyEvent.VK_LEFT && character_x >= 120) {
         	character_x -= 30;
         	
         }
         // 오른쪽 화살표 키를 눌렀을 때 이미지의 x 좌표를 증가시켜 오른쪽으로 이동
-        else if (keyCode == KeyEvent.VK_RIGHT) {
+        else if (keyCode == KeyEvent.VK_RIGHT && character_x <= 1000) {
         	character_x += 30;
         }
         if(cnt) {
         	new Thread(new Runnable() {
 				@Override
 				public void run() {
-					while(initalTimer > 0) {
+					while(initalTimer >= -1) {
 			            // 아이템의 y 좌표를 증가시켜 아이템을 아래로 떨어트림.
 			            for (int i = 0; i < 9; i++) {
 			            	y += itemSpeed;
@@ -201,7 +201,6 @@ public class StudyPanel extends JPanel implements KeyListener {
 			            // 화면을 다시 그려서 아이템을 이동.
 			            repaint();
 
-			            
 			            try {
 			                Thread.sleep(1000);
 			            } catch (InterruptedException e) {
