@@ -49,7 +49,7 @@ public class StudyPanel extends JPanel implements KeyListener {
     
     
     private BufferedImage[] item;
-    private int itemSpeed = 5;
+    private int itemSpeed = 1;
     private static int randoms[] = new int[9];
 
     private int character_y = 550;
@@ -58,7 +58,7 @@ public class StudyPanel extends JPanel implements KeyListener {
     private boolean cnt = true;
     private int x;
     private int y = -10;
-    
+    private boolean soundcheck = true;
     public static JLabel text_time;
     private int initalTimer = 15;
     
@@ -108,6 +108,7 @@ public class StudyPanel extends JPanel implements KeyListener {
          addMouseListener(new MouseAdapter() {
              @Override
              public void mouseClicked(MouseEvent e) {
+            	 SoundStop();
                  // 마우스 왼쪽 버튼을 클릭했을 때 화면 전환: ExplanationPanel에서 RunPanel로 전환
                  cardLayout.show(cardPanel, "TestPanel");
              }
@@ -243,7 +244,14 @@ public class StudyPanel extends JPanel implements KeyListener {
             }
         }
     }
-    
+    MusicPlayer musicPlayer = new MusicPlayer();
+    public void Sound() {
+    	System.out.println("실행됨");
+    	musicPlayer.playMusic("audio/class.wav");
+    }
+    public void SoundStop() {
+    	musicPlayer.stopMusic();
+    }
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -259,7 +267,10 @@ public class StudyPanel extends JPanel implements KeyListener {
         if(backgroundtop != null) g.drawImage(backgroundtop,  0,  -30,  1198, 100, this);
         if(backgroundbottom != null) g.drawImage(backgroundbottom, 2, 638, 1198, 100, this);
         if (player != null) g.drawImage(player, character_x, character_y, this);
-        
+        if(soundcheck) {
+        	Sound();
+        	soundcheck = false;
+        }
         heartAt950x10.draw(g);
         
     }

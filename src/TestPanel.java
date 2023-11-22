@@ -119,7 +119,7 @@ public class TestPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Move to BossPanel when Enter key is pressed
-            	
+            	soundStop();
                 cardLayout.show(cardPanel, "BossPanel");
             }
         });
@@ -147,9 +147,9 @@ public class TestPanel extends JPanel {
 	        });
 		}
     }
+    MusicPlayer music = new MusicPlayer();
     public void sound1() {
     	if(soundCnt) {
-    		MusicPlayer music = new MusicPlayer();
     		music.playMusic("audio/test.wav"); 
     		soundCnt = false;
     	}
@@ -160,7 +160,7 @@ public class TestPanel extends JPanel {
     	
     }
     public void soundStop() {
-    	
+    	music.stopMusic();
     }
     @Override
     protected void paintComponent(Graphics g) {
