@@ -48,6 +48,8 @@ public class BossPanel extends JPanel {
     private Image boss; // 보스
     private int bossHealth; // 보스의 체력
     
+    private boolean isGameOver; 
+    
     private Heart heartAt10x10; //하트를 관리할 객체
     private boolean soundCnt = true;
     public void setCharacterImage(String characterSelection) {
@@ -59,6 +61,8 @@ public class BossPanel extends JPanel {
     public BossPanel(CardLayout cardLayout, JPanel cardPanel) {
         this.cardLayout = cardLayout;
         this.cardPanel = cardPanel;
+        
+        isGameOver = false;
 
         try {
             // 이미지 파일을 불러옵니다. 이미지 파일은 images 폴더에 있어야 합니다.
@@ -318,9 +322,12 @@ public class BossPanel extends JPanel {
     }
 
     private void checkBossHealth() {
-        // 보스의 체력이 0 이하로 떨어지면 게임 오버 또는 다른 처리를 수행할 수 있습니다.
-        if (bossHealth <= 0) {
-            // 게임 오버 또는 다른 처리
+        if (bossHealth <= 0 && !isGameOver) {
+            isGameOver = true; // Set the game over flag to prevent multiple transitions
+            // Perform actions when boss health reaches 0 (e.g., show a message, play a sound)
+
+            // Move to the next panel (Story05Panel)
+            cardLayout.show(cardPanel, "Story05Panel");
         }
     }
     

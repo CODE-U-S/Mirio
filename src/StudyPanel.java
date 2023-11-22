@@ -110,7 +110,7 @@ public class StudyPanel extends JPanel implements KeyListener {
              public void mouseClicked(MouseEvent e) {
             	 SoundStop();
                  // 마우스 왼쪽 버튼을 클릭했을 때 화면 전환: ExplanationPanel에서 RunPanel로 전환
-                 cardLayout.show(cardPanel, "TestPanel");
+                 cardLayout.show(cardPanel, "Story04Panel");
              }
          });
 
@@ -208,7 +208,7 @@ public class StudyPanel extends JPanel implements KeyListener {
 			            }
 					}
 					//이동, 음악스탑
-					cardLayout.show(cardPanel, "TestPanel");
+					cardLayout.show(cardPanel, "Story04Panel");
 					SoundStop();
 				}
 			}).start();
