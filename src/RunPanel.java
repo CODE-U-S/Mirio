@@ -78,7 +78,7 @@ public class RunPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
             	// 화면 전환: StartPanel에서 CharacterPanel로 전환
-            	cardLayout.show(cardPanel, "StudyPanel");
+            	cardLayout.show(cardPanel, "Story03Panel");
             }
         });
         setLayout(null); // 레이아웃 관리자를 사용하지 않고 직접 위치 설정
