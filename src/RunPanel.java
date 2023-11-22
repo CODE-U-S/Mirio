@@ -392,18 +392,22 @@ public class RunPanel extends JPanel {
                         cardLayout.show(cardPanel, "StudyPanel");
                         // Additional logic can be added as needed
                         ((Timer) e.getSource()).stop(); // Stop the timer after triggering the transition
+                        
                     }
                 });
-
                 delayTimer.setRepeats(false); // Make the timer run only once
                 delayTimer.start();
+                SoundStop();
             }
         }
     }
     
+    MusicPlayer musicPlayer = new MusicPlayer();
     public void Sound() {
-    	MusicPlayer musicPlayer = new MusicPlayer();
     	musicPlayer.playMusic("audio/run.wav");
+    }
+    public void SoundStop() {
+    	musicPlayer.stopMusic();
     }
     @Override
     protected void paintComponent(Graphics g) {
