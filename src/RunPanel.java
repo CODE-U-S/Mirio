@@ -46,7 +46,7 @@ public class RunPanel extends JPanel {
     private List<Block> blocks = new ArrayList<>(); // 블록
     
     private int score = 0;
-    
+    private boolean soundCnt = true;
     private Heart heartAt300x600; // 300, 600 위치의 하트를 관리할 객체
     
     // 캐릭터 이미지 받기
@@ -315,7 +315,6 @@ public class RunPanel extends JPanel {
                             } else {
                                 // 떨어짐이 끝나면 실행 중인 타이머 중지
                                 ((Timer) e.getSource()).stop();
-
                                 // 점프 상태 종료
                                 isJump = false;
 
@@ -402,6 +401,10 @@ public class RunPanel extends JPanel {
         }
     }
     
+    public void Sound() {
+    	MusicPlayer musicPlayer = new MusicPlayer();
+    	musicPlayer.playMusic("audio/run.wav");
+    }
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -433,16 +436,17 @@ public class RunPanel extends JPanel {
         heartAt300x600.draw(g);
 
 
+        if(soundCnt) {
+        	Sound();
+        	soundCnt = false;
+        }
         // 캐릭터 이미지 그리기
         g.drawImage(player, x, y, this);
     }
-    
     // 진행바 작업 완료 시 호출되는 메서드
     private void onProgressBarComplete() {
         heartAt300x600.setCount(); // count 감소
         if (heartAt300x600.getCount() <= 0) {
-            // 여기에 추가 작업을 수행할 수 있습니다.
-            // 예를 들어, 다음 단계로의 전환 등을 처리할 수 있습니다.
         }
         repaint(); // 이 줄을 추가하여 패널을 다시 그립니다
     }    
