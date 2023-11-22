@@ -11,17 +11,19 @@ public class StartPanel extends JPanel{
     private BufferedImage image; // 이미지를 저장할 변수
     private CardLayout cardLayout;
     private JPanel cardPanel;
-    
+    private boolean cnt = true;
     // 이미지 파일 로드
     public StartPanel(CardLayout cardLayout, JPanel cardPanel) {
         this.cardLayout = cardLayout;
         this.cardPanel = cardPanel;
     	// 화면 전환
     	setLayout(new BorderLayout());
-    	
+    	if(cnt) {
+    		Sound();
+    	}
         try {
             // 이미지 파일을 로드합니다. 이미지 파일은 images 폴더에 있어야 합니다.
-            image = ImageIO.read(new File("images/start.png"));
+            image = ImageIO.read(new File("images/start_background.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -34,6 +36,7 @@ public class StartPanel extends JPanel{
             @Override
             public void actionPerformed(ActionEvent e) {
                 // 화면 전환: StartPanel에서 CharacterPanel로 전환
+            	SoundStop();
                 cardLayout.show(cardPanel, "Story01Panel");
             }
         });
@@ -45,9 +48,15 @@ public class StartPanel extends JPanel{
         
         
         
-        
     }
-
+    MusicPlayer musicPlayer = new MusicPlayer();
+    public void Sound() {
+    	// 음악 재생
+    	musicPlayer.playMusic("audio/music01.wav");
+    }
+    public void SoundStop() {
+    	musicPlayer.stopMusic();
+    }
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
