@@ -201,13 +201,16 @@ public class StudyPanel extends JPanel implements KeyListener {
 			            // 화면을 다시 그려서 아이템을 이동.
 			            repaint();
 
-			            // 일정 시간 동안 정지(밀리초 단위)
+			            
 			            try {
 			                Thread.sleep(1000);
 			            } catch (InterruptedException e) {
 			                e.printStackTrace();
 			            }
 					}
+					//이동, 음악스탑
+					cardLayout.show(cardPanel, "TestPanel");
+					SoundStop();
 				}
 			}).start();
         	
@@ -246,7 +249,6 @@ public class StudyPanel extends JPanel implements KeyListener {
     }
     MusicPlayer musicPlayer = new MusicPlayer();
     public void Sound() {
-    	System.out.println("실행됨");
     	musicPlayer.playMusic("audio/class.wav");
     }
     public void SoundStop() {
