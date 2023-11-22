@@ -327,6 +327,7 @@ public class BossPanel extends JPanel {
             // Perform actions when boss health reaches 0 (e.g., show a message, play a sound)
 
             // Move to the next panel (Story05Panel)
+            musicPlayer.stopMusic();
             cardLayout.show(cardPanel, "Story05Panel");
         }
     }
@@ -388,8 +389,8 @@ public class BossPanel extends JPanel {
         }
     }
 
+    MusicPlayer musicPlayer = new MusicPlayer();
     public void Sound() {
-    	MusicPlayer musicPlayer = new MusicPlayer();
     	musicPlayer.playMusic("audio/boss.wav");
     }
 

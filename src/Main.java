@@ -63,10 +63,7 @@ public class Main implements Runnable {
 
         // 화면 중앙에 위치
         frame.setLocationRelativeTo(null);
-        
-        // 음악 재생
-        MusicPlayer musicPlayer = new MusicPlayer();
-        musicPlayer.playMusic("audio/music01.wav");
+
 
     }
     
