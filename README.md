@@ -90,5 +90,7 @@
 - 날라오는 화살을 맞으면 하트가 깍인다.
 - 제한 시간 동안 화살을 피해 살아남으면 승리!
 
+
+#### 6. 기획서와 발표
 - 기획서 : https://drive.google.com/file/d/1ngl_ytG2GrY4IwPMbutnQ28rHY_psCqx/view?usp=drive_link
 - 발표ppt : https://drive.google.com/file/d/13M8BYGg4pq-kJiuq6O0NShMcTjVaoAp7/view?usp=drive_link
