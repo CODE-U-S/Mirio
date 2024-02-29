@@ -21,7 +21,7 @@
   <summary>Image</summary>
   
   ![001](https://github.com/dlwlstjs/Mirio/blob/main/images/start_background.png)
-  ![002]
+  ![002](https://github.com/dlwlstjs/Mirio/blob/main/images/readme_img/character_select.png)
 </details>
 
 홈에서 아무 버튼이나 누르면 캐릭터를 선택할 수 있는 화면이 나온다.
@@ -34,7 +34,7 @@
 <details>
   <summary>Image</summary>
   
-  ![003](https://github.com/iris-starry/Tomorrow-s-Me/assets/106311884/fead8ba8-11c3-40a2-860a-27ae35e9f447)
+  ![003](https://github.com/dlwlstjs/Mirio/blob/main/images/readme_img/run_img.png)
 </details>
 
 등교는 마리오에서 영감을 받아 장애물을 피해 시간 안에 목적지까지 도달하는 형식으로 만들었다.
@@ -49,8 +49,7 @@
 <details>
   <summary>Image</summary>
   
-  ![004](https://github.com/iris-starry/Tomorrow-s-Me/assets/106311884/e5f06be9-2d6f-484f-bb3a-17fb796805d5)
-![005](https://github.com/iris-starry/Tomorrow-s-Me/assets/106311884/86c1e762-21f1-405e-8943-c5eb6b758bc1)
+  ![004](https://github.com/dlwlstjs/Mirio/blob/main/images/readme_img/Listen_img.png)
 </details>
 
 수업 시간에 여러가지 유혹들을 피해 살아남는게 주된 목적이다.
@@ -64,8 +63,8 @@
 
 <details>
   <summary>Image</summary>
-  
-  ![006](https://github.com/iris-starry/Tomorrow-s-Me/assets/106311884/4e7dbb3c-822d-4dc5-b01e-df0a5c5069cf)
+  ![005](https://github.com/dlwlstjs/Mirio/blob/main/images/readme_img/score_img.png)
+  ![006](https://github.com/dlwlstjs/Mirio/blob/main/images/readme_img/test_img.png)
 </details>
 
 시험 당일. 늦잠을 자서 omr 카드를 무작위로 찍는다.
@@ -80,7 +79,7 @@
 <details>
   <summary>Image</summary>
   
-  ![007](https://github.com/iris-starry/Tomorrow-s-Me/assets/106311884/8cca3fcd-44a8-42e9-a849-4b85d84c7f42)
+  ![007](https://github.com/dlwlstjs/Mirio/blob/main/images/readme_img/boss_img.png)
 </details>
 
 
@@ -89,5 +88,5 @@
 - 날라오는 화살을 맞으면 하트가 깍인다.
 - 제한 시간 동안 화살을 피해 살아남으면 승리!
 
-  기획서 :
-  발표ppt : 
+  기획서 : https://drive.google.com/file/d/1ngl_ytG2GrY4IwPMbutnQ28rHY_psCqx/view?usp=drive_link
+  발표ppt : https://drive.google.com/file/d/13M8BYGg4pq-kJiuq6O0NShMcTjVaoAp7/view?usp=drive_link
