@@ -63,9 +63,10 @@
 
 <details>
   <summary>Image</summary>
+
+  ![005](https://github.com/dlwlstjs/Mirio/blob/main/images/readme_img/test_img.png)
+  ![006](https://github.com/dlwlstjs/Mirio/blob/main/images/readme_img/score_img.png)
   
-  ![005](https://github.com/dlwlstjs/Mirio/blob/main/images/readme_img/score_img.png)
-  ![006](https://github.com/dlwlstjs/Mirio/blob/main/images/readme_img/test_img.png)
 </details>
 
 시험 당일. 늦잠을 자서 omr 카드를 무작위로 찍는다.
